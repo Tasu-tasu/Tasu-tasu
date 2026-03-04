@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="520" height="340" role="img" aria-labelledby="languages_markup-title languages_markup-desc">
 <title id="languages_markup-title">Markup &amp; docs distribution</title>
-<desc id="languages_markup-desc">Markup &amp; docs distribution. HTML: 62.0%, CSS: 38.0%</desc>
+<desc id="languages_markup-desc">Markup &amp; docs distribution. HTML: 62.6%, CSS: 37.4%</desc>
 <defs>
 <pattern id="p0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#0072b2"/></pattern>
 <pattern id="p1" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#e69f00"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
 </defs>
-<style>text { font-family: sans-serif; }</style>
+<style>text { font-family: sans-serif; } .slice:focus{stroke:#000; stroke-width:3; outline:none} .slice{cursor:pointer}</style>
 <text x="260" y="22" font-size="15" font-weight="bold" text-anchor="middle">Markup &amp; docs distribution</text>
-<path d="M 160 160 L 160.000 30.000 A 130 130 0 1 1 70.811 254.580 Z" fill="url(#p0)" stroke="white" stroke-width="1.5" role="img" aria-label="HTML: 62.0%"><title>HTML: 62.0%</title></path>
-<text x="234.9" y="189.7" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">62.0%</text>
-<path d="M 160 160 L 70.811 254.580 A 130 130 0 0 1 160.000 30.000 Z" fill="url(#p1)" stroke="white" stroke-width="1.5" role="img" aria-label="CSS: 38.0%"><title>CSS: 38.0%</title></path>
-<text x="85.1" y="130.3" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">38.0%</text>
+<path class="slice" d="M 160 160 L 160.000 30.000 A 130 130 0 1 1 67.533 251.377 Z" fill="url(#p0)" stroke="white" stroke-width="1.5" role="img" aria-label="HTML: 62.6%" tabindex="0"><title>HTML: 62.6%</title></path>
+<text x="234.4" y="191.1" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">62.6%</text>
+<path class="slice" d="M 160 160 L 67.533 251.377 A 130 130 0 0 1 160.000 30.000 Z" fill="url(#p1)" stroke="white" stroke-width="1.5" role="img" aria-label="CSS: 37.4%" tabindex="0"><title>CSS: 37.4%</title></path>
+<text x="85.6" y="128.9" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">37.4%</text>
 <rect x="310" y="30" width="14" height="14" fill="url(#p0)" rx="2" stroke="#0072b2" stroke-width="1" aria-hidden="true"/>
-<text x="332" y="41" font-size="13" aria-hidden="true">HTML 62.0%</text>
+<text x="332" y="41" font-size="13" aria-hidden="true">HTML 62.6%</text>
 <rect x="310" y="56" width="14" height="14" fill="url(#p1)" rx="2" stroke="#e69f00" stroke-width="1" aria-hidden="true"/>
-<text x="332" y="67" font-size="13" aria-hidden="true">CSS 38.0%</text>
+<text x="332" y="67" font-size="13" aria-hidden="true">CSS 37.4%</text>
 </svg>

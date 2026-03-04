@@ -1,23 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="520" height="340" role="img" aria-labelledby="languages_programming-title languages_programming-desc">
 <title id="languages_programming-title">Language distribution (programming &amp; scripts)</title>
-<desc id="languages_programming-desc">Language distribution (programming &amp; scripts). JavaScript: 77.7%, Python: 13.9%, Vue: 8.4%</desc>
+<desc id="languages_programming-desc">Language distribution (programming &amp; scripts). Jupyter Notebook: 41.5%, TeX: 28.5%, C++: 14.1%, Python: 6.6%, JavaScript: 4.0%, C: 1.7%, MATLAB: 1.3%, CMake: 0.7%, Other: 1.5%</desc>
 <defs>
 <pattern id="p0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#0072b2"/></pattern>
 <pattern id="p1" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#e69f00"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
 <pattern id="p2" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#009e73"/><line x1="0" y1="4" x2="8" y2="4" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p3" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#cc79a7"/><line x1="4" y1="0" x2="4" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p4" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#56b4e9"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="0" y1="0" x2="8" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p5" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#d55e00"/><circle cx="4" cy="4" r="1.5" fill="rgba(0,0,0,0.28)"/></pattern>
+<pattern id="p6" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#f0e442"/><line x1="0" y1="0" x2="8" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p7" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#999999"/><line x1="0" y1="2" x2="8" y2="2" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="0" y1="6" x2="8" y2="6" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p8" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#332288"/><line x1="2" y1="0" x2="2" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="6" y1="0" x2="6" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
 </defs>
-<style>text { font-family: sans-serif; }</style>
+<style>text { font-family: sans-serif; } .slice:focus{stroke:#000; stroke-width:3; outline:none} .slice{cursor:pointer}</style>
 <text x="260" y="22" font-size="15" font-weight="bold" text-anchor="middle">Language distribution (programming &amp; scripts)</text>
-<path d="M 160 160 L 160.000 30.000 A 130 130 0 1 1 31.805 138.412 Z" fill="url(#p0)" stroke="white" stroke-width="1.5" role="img" aria-label="JavaScript: 77.7%"><title>JavaScript: 77.7%</title></path>
-<text x="212.0" y="221.5" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">77.7%</text>
-<path d="M 160 160 L 31.805 138.412 A 130 130 0 0 1 94.382 47.776 Z" fill="url(#p1)" stroke="white" stroke-width="1.5" role="img" aria-label="Python: 13.9%"><title>Python: 13.9%</title></path>
-<text x="93.7" y="114.2" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">13.9%</text>
-<path d="M 160 160 L 94.382 47.776 A 130 130 0 0 1 160.000 30.000 Z" fill="url(#p2)" stroke="white" stroke-width="1.5" role="img" aria-label="Vue: 8.4%"><title>Vue: 8.4%</title></path>
-<text x="138.9" y="82.2" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">8.4%</text>
+<path class="slice" d="M 160 160 L 160.000 30.000 A 130 130 0 0 1 226.386 271.772 Z" fill="url(#p0)" stroke="white" stroke-width="1.5" role="img" aria-label="Jupyter Notebook: 41.5%" tabindex="0"><title>Jupyter Notebook: 41.5%</title></path>
+<text x="237.7" y="138.7" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">41.5%</text>
+<path class="slice" d="M 160 160 L 226.386 271.772 A 130 130 0 0 1 36.324 200.054 Z" fill="url(#p1)" stroke="white" stroke-width="1.5" role="img" aria-label="TeX: 28.5%" tabindex="0"><title>TeX: 28.5%</title></path>
+<text x="131.5" y="235.4" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">28.5%</text>
+<path class="slice" d="M 160 160 L 36.324 200.054 A 130 130 0 0 1 50.915 89.286 Z" fill="url(#p2)" stroke="white" stroke-width="1.5" role="img" aria-label="C++: 14.1%" tabindex="0"><title>C++: 14.1%</title></path>
+<text x="80.1" y="149.5" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">14.1%</text>
+<path class="slice" d="M 160 160 L 50.915 89.286 A 130 130 0 0 1 88.939 51.141 Z" fill="url(#p3)" stroke="white" stroke-width="1.5" role="img" aria-label="Python: 6.6%" tabindex="0"><title>Python: 6.6%</title></path>
+<text x="102.9" y="103.1" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">6.6%</text>
+<path class="slice" d="M 160 160 L 88.939 51.141 A 130 130 0 0 1 118.486 36.807 Z" fill="url(#p4)" stroke="white" stroke-width="1.5" role="img" aria-label="JavaScript: 4.0%" tabindex="0"><title>JavaScript: 4.0%</title></path>
+<path class="slice" d="M 160 160 L 118.486 36.807 A 130 130 0 0 1 131.808 33.094 Z" fill="url(#p5)" stroke="white" stroke-width="1.5" role="img" aria-label="C: 1.7%" tabindex="0"><title>C: 1.7%</title></path>
+<path class="slice" d="M 160 160 L 131.808 33.094 A 130 130 0 0 1 142.124 31.235 Z" fill="url(#p6)" stroke="white" stroke-width="1.5" role="img" aria-label="MATLAB: 1.3%" tabindex="0"><title>MATLAB: 1.3%</title></path>
+<path class="slice" d="M 160 160 L 142.124 31.235 A 130 130 0 0 1 147.518 30.601 Z" fill="url(#p7)" stroke="white" stroke-width="1.5" role="img" aria-label="CMake: 0.7%" tabindex="0"><title>CMake: 0.7%</title></path>
+<path class="slice" d="M 160 160 L 147.518 30.601 A 130 130 0 0 1 160.000 30.000 Z" fill="url(#p8)" stroke="white" stroke-width="1.5" role="img" aria-label="Other: 1.5%" tabindex="0"><title>Other: 1.5%</title></path>
 <rect x="310" y="30" width="14" height="14" fill="url(#p0)" rx="2" stroke="#0072b2" stroke-width="1" aria-hidden="true"/>
-<text x="332" y="41" font-size="13" aria-hidden="true">JavaScript 77.7%</text>
+<text x="332" y="41" font-size="13" aria-hidden="true">Jupyter Notebook 41.5%</text>
 <rect x="310" y="56" width="14" height="14" fill="url(#p1)" rx="2" stroke="#e69f00" stroke-width="1" aria-hidden="true"/>
-<text x="332" y="67" font-size="13" aria-hidden="true">Python 13.9%</text>
+<text x="332" y="67" font-size="13" aria-hidden="true">TeX 28.5%</text>
 <rect x="310" y="82" width="14" height="14" fill="url(#p2)" rx="2" stroke="#009e73" stroke-width="1" aria-hidden="true"/>
-<text x="332" y="93" font-size="13" aria-hidden="true">Vue 8.4%</text>
+<text x="332" y="93" font-size="13" aria-hidden="true">C++ 14.1%</text>
+<rect x="310" y="108" width="14" height="14" fill="url(#p3)" rx="2" stroke="#cc79a7" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="119" font-size="13" aria-hidden="true">Python 6.6%</text>
+<rect x="310" y="134" width="14" height="14" fill="url(#p4)" rx="2" stroke="#56b4e9" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="145" font-size="13" aria-hidden="true">JavaScript 4.0%</text>
+<rect x="310" y="160" width="14" height="14" fill="url(#p5)" rx="2" stroke="#d55e00" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="171" font-size="13" aria-hidden="true">C 1.7%</text>
+<rect x="310" y="186" width="14" height="14" fill="url(#p6)" rx="2" stroke="#f0e442" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="197" font-size="13" aria-hidden="true">MATLAB 1.3%</text>
+<rect x="310" y="212" width="14" height="14" fill="url(#p7)" rx="2" stroke="#999999" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="223" font-size="13" aria-hidden="true">CMake 0.7%</text>
+<rect x="310" y="238" width="14" height="14" fill="url(#p8)" rx="2" stroke="#332288" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="249" font-size="13" aria-hidden="true">Other 1.5%</text>
 </svg>
