@@ -45,6 +45,7 @@ jobs:
 
           if git status --porcelain | grep .; then
             git add languages.svg
+            git add README.md
             git commit -m "Update language statistics"
             git push
           else
