@@ -2,6 +2,10 @@
 """
 Generate language percentage SVGs for this repository by counting bytes per file extension.
 Writes: languages_programming.svg and languages_markup.svg at the repo root.
+
+Note / 表記:
+This script was created or updated with the assistance of an AI model: GPT-5 mini (model ID: gpt-5-mini).
+このスクリプトは AI（GPT-5 mini, model ID: gpt-5-mini）の支援により作成または更新されました。
 """
 import os
 from collections import defaultdict, Counter

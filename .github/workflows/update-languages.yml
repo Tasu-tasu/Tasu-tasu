@@ -36,7 +36,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          python scripts/github_languages_svg.py
+          python scripts/generate_language_svg.py
 
       - name: Commit and push if changed
         run: |
