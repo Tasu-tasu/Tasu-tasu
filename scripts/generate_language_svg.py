@@ -7,6 +7,7 @@ Note / 表記:
 This script was created or updated with the assistance of an AI model: GPT-5 mini (model ID: gpt-5-mini).
 このスクリプトは AI（GPT-5 mini, model ID: gpt-5-mini）の支援により作成または更新されました。
 """
+import html
 import os
 from collections import defaultdict, Counter
 
@@ -97,7 +98,7 @@ def make_bar_svg(counter, title, outpath, width=820, height=140):
     total = sum(counter.values())
     if total == 0:
         svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">\n'
-        svg += f'<text x="10" y="20" font-family="sans-serif" font-size="14">{title}: No data found</text>\n</svg>\n'
+        svg += f'<text x="10" y="20" font-family="sans-serif" font-size="14">{html.escape(title)}: No data found</text>\n</svg>\n'
         with open(outpath, 'w') as f:
             f.write(svg)
         return
@@ -122,7 +123,7 @@ def make_bar_svg(counter, title, outpath, width=820, height=140):
 
     svg_parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">']
     svg_parts.append(f'<style>text{{font-family:sans-serif}}</style>')
-    svg_parts.append(f'<text x="{bar_x}" y="18" font-size="16" font-weight="bold">{title}</text>')
+    svg_parts.append(f'<text x="{bar_x}" y="18" font-size="16" font-weight="bold">{html.escape(title)}</text>')
 
     # draw segments
     cur_x = bar_x
@@ -134,7 +135,7 @@ def make_bar_svg(counter, title, outpath, width=820, height=140):
         # label if segment wide enough
         if seg_w > 60:
             pct = frac * 100
-            svg_parts.append(f'<text x="{cur_x+6}" y="{bar_y+19}" font-size="12" fill="#fff">{lang} {pct:.1f}%</text>')
+            svg_parts.append(f'<text x="{cur_x+6}" y="{bar_y+19}" font-size="12" fill="#fff">{html.escape(lang)} {pct:.1f}%</text>')
         cur_x += seg_w
 
     # legend
@@ -145,7 +146,7 @@ def make_bar_svg(counter, title, outpath, width=820, height=140):
         pct = size / total * 100
         color = color_for(i)
         svg_parts.append(f'<rect x="{lx}" y="{legend_y}" width="12" height="12" fill="{color}" rx="2" ry="2"/>')
-        svg_parts.append(f'<text x="{lx+18}" y="{legend_y+11}" font-size="12">{lang} {pct:.1f}%</text>')
+        svg_parts.append(f'<text x="{lx+18}" y="{legend_y+11}" font-size="12">{html.escape(lang)} {pct:.1f}%</text>')
         lx += 140
         if lx > width - 120:
             lx = legend_x
