@@ -43,7 +43,9 @@ EXT_LANG = {
     '.md': 'Markdown', '.markdown': 'Markdown',
     '.xml': 'XML', '.json': 'JSON', '.yml': 'YAML', '.yaml': 'YAML',
     '.ini': 'INI', '.cfg': 'Config', '.toml': 'TOML',
-    '.txt': 'Text', '.svg': 'SVG'
+    '.txt': 'Text', '.svg': 'SVG',
+    # TeX / LaTeX
+    '.tex': 'LaTeX', '.sty': 'LaTeX', '.cls': 'LaTeX', '.bib': 'BibTeX'
 }
 
 SKIP_DIRS = {'.git', 'node_modules', '__pycache__', '.venv', 'venv', '.github'}
