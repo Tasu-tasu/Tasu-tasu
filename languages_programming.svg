@@ -5,6 +5,12 @@
 <pattern id="p0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#0072b2"/></pattern>
 <pattern id="p1" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#e69f00"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
 <pattern id="p2" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#009e73"/><line x1="0" y1="4" x2="8" y2="4" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p3" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#cc79a7"/><line x1="4" y1="0" x2="4" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p4" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#56b4e9"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="0" y1="0" x2="8" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p5" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#d55e00"/><circle cx="4" cy="4" r="1.5" fill="rgba(0,0,0,0.28)"/></pattern>
+<pattern id="p6" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#f0e442"/><line x1="0" y1="0" x2="8" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p7" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#999999"/><line x1="0" y1="2" x2="8" y2="2" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="0" y1="6" x2="8" y2="6" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p8" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#332288"/><line x1="2" y1="0" x2="2" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/><line x1="6" y1="0" x2="6" y2="8" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
 </defs>
 <style>text { font-family: sans-serif; } .slice:focus{stroke:#000; stroke-width:3; outline:none} .slice{cursor:pointer}</style>
 <text x="260" y="22" font-size="15" font-weight="bold" text-anchor="middle">Language distribution (programming &amp; scripts)</text>
