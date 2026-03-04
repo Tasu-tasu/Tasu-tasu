@@ -1,11 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="140">
-<style>text{font-family:sans-serif}</style>
-<text x="20" y="18" font-size="16" font-weight="bold">Language distribution (programming &amp; scripts)</text>
-<rect x="20" y="30" width="779" height="28" fill="#4e79a7" rx="4" ry="4"/>
-<text x="26" y="49" font-size="12" fill="#fff">Python 99.9%</text>
-<rect x="799" y="30" width="1" height="28" fill="#f28e2b" rx="4" ry="4"/>
-<rect x="20" y="88" width="12" height="12" fill="#4e79a7" rx="2" ry="2"/>
-<text x="38" y="99" font-size="12">Python 99.9%</text>
-<rect x="160" y="88" width="12" height="12" fill="#f28e2b" rx="2" ry="2"/>
-<text x="178" y="99" font-size="12">Other 0.1%</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="340" role="img" aria-labelledby="languages_programming-title languages_programming-desc">
+<title id="languages_programming-title">Language distribution (programming &amp; scripts)</title>
+<desc id="languages_programming-desc">Language distribution (programming &amp; scripts). JavaScript: 77.7%, Python: 13.9%, Vue: 8.4%</desc>
+<defs>
+<pattern id="p0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#0072b2"/></pattern>
+<pattern id="p1" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#e69f00"/><line x1="0" y1="8" x2="8" y2="0" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+<pattern id="p2" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#009e73"/><line x1="0" y1="4" x2="8" y2="4" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/></pattern>
+</defs>
+<style>text { font-family: sans-serif; }</style>
+<text x="260" y="22" font-size="15" font-weight="bold" text-anchor="middle">Language distribution (programming &amp; scripts)</text>
+<path d="M 160 160 L 160.000 30.000 A 130 130 0 1 1 31.805 138.412 Z" fill="url(#p0)" stroke="white" stroke-width="1.5" role="img" aria-label="JavaScript: 77.7%"><title>JavaScript: 77.7%</title></path>
+<text x="212.0" y="221.5" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">77.7%</text>
+<path d="M 160 160 L 31.805 138.412 A 130 130 0 0 1 94.382 47.776 Z" fill="url(#p1)" stroke="white" stroke-width="1.5" role="img" aria-label="Python: 13.9%"><title>Python: 13.9%</title></path>
+<text x="93.7" y="114.2" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">13.9%</text>
+<path d="M 160 160 L 94.382 47.776 A 130 130 0 0 1 160.000 30.000 Z" fill="url(#p2)" stroke="white" stroke-width="1.5" role="img" aria-label="Vue: 8.4%"><title>Vue: 8.4%</title></path>
+<text x="138.9" y="82.2" font-size="11" fill="#fff" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">8.4%</text>
+<rect x="310" y="30" width="14" height="14" fill="url(#p0)" rx="2" stroke="#0072b2" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="41" font-size="13" aria-hidden="true">JavaScript 77.7%</text>
+<rect x="310" y="56" width="14" height="14" fill="url(#p1)" rx="2" stroke="#e69f00" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="67" font-size="13" aria-hidden="true">Python 13.9%</text>
+<rect x="310" y="82" width="14" height="14" fill="url(#p2)" rx="2" stroke="#009e73" stroke-width="1" aria-hidden="true"/>
+<text x="332" y="93" font-size="13" aria-hidden="true">Vue 8.4%</text>
 </svg>
