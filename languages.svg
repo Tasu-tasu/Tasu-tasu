@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="388" role="img" aria-labelledby="languages-title languages-desc">
 <title id="languages-title">Language distribution</title>
-<desc id="languages-desc">Language distribution. Jupyter Notebook: 36.7%, TeX: 31.7%, C++: 12.4%, Python: 7.1%, JavaScript: 3.6%, HTML: 1.5%, C: 1.5%, MATLAB: 1.3%, TypeScript: 1.1%, CSS: 0.9%, Other: 2.2%</desc>
+<desc id="languages-desc">Language distribution. Jupyter Notebook: 36.4%, TeX: 32.4%, C++: 12.2%, Python: 7.0%, JavaScript: 3.5%, HTML: 1.5%, C: 1.5%, MATLAB: 1.4%, TypeScript: 1.1%, CSS: 0.9%, Other: 2.2%</desc>
 <style>:root{--bg-fill:#f0f0f0;--title-fill:#000000;--subtitle-fill:#333333;--center-fill:white;--center-text-main:#444444;--center-text-sub:#777777;--legend-text-fill:#000000;--slice-focus-stroke:#000000;--pct-label-inside-fill:#ffffff;--slice-edge:white;--overlay-color:rgba(0,0,0,0.22);}@media (prefers-color-scheme: dark){:root{--bg-fill:#0b0b0b;--title-fill:#ffffff;--subtitle-fill:#dddddd;--center-fill:#0b0b0b;--center-text-main:#ffffff;--center-text-sub:#cccccc;--legend-text-fill:#ffffff;--slice-focus-stroke:#ffffff;--pct-label-inside-fill:#ffffff;--slice-edge:#0b0b0b;--overlay-color:rgba(255,255,255,0.18);}}text{font-family:sans-serif;} .slice:focus{stroke:var(--slice-focus-stroke);stroke-width:3;outline:none} .slice{cursor:pointer} </style>
 <defs>
 <pattern id="p0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#DA5B0B"/></pattern>
@@ -17,38 +17,37 @@
 </defs>
 <circle cx="175" cy="185" r="155" fill="var(--bg-fill)"/>
 <text x="175" y="16" font-size="15" font-weight="bold" text-anchor="middle" fill="var(--title-fill)">Language distribution</text>
-<path class="slice" d="M 175.000 30.000 A 155 155 0 0 1 290.290 288.601 L 230.785 235.130 A 75 75 0 0 0 175.000 110.000 Z" fill="url(#p0)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Jupyter Notebook: 36.7%" tabindex="0"><title>Jupyter Notebook: 36.7%</title></path>
-<text x="280.0" y="138.2" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">36.7%</text>
-<path class="slice" d="M 290.290 288.601 A 155 155 0 0 1 33.296 247.810 L 106.434 215.392 A 75 75 0 0 0 230.785 235.130 Z" fill="url(#p1)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="TeX: 31.7%" tabindex="0"><title>TeX: 31.7%</title></path>
-<text x="157.0" y="298.6" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">31.7%</text>
-<path class="slice" d="M 33.296 247.810 A 155 155 0 0 1 30.146 129.842 L 104.909 158.311 A 75 75 0 0 0 106.434 215.392 Z" fill="url(#p2)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="C++: 12.4%" tabindex="0"><title>C++: 12.4%</title></path>
-<text x="60.0" y="188.1" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">12.4%</text>
-<path class="slice" d="M 30.146 129.842 A 155 155 0 0 1 68.112 72.750 L 123.280 130.686 A 75 75 0 0 0 104.909 158.311 Z" fill="url(#p3)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Python: 7.1%" tabindex="0"><title>Python: 7.1%</title></path>
-<text x="79.2" y="121.3" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">7.1%</text>
-<path class="slice" d="M 68.112 72.750 A 155 155 0 0 1 95.665 51.842 L 136.612 120.569 A 75 75 0 0 0 123.280 130.686 Z" fill="url(#p4)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="JavaScript: 3.6%" tabindex="0"><title>JavaScript: 3.6%</title></path>
-<path class="slice" d="M 95.665 51.842 A 155 155 0 0 1 108.827 44.835 L 142.981 117.178 A 75 75 0 0 0 136.612 120.569 Z" fill="url(#p5)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="HTML: 1.5%" tabindex="0"><title>HTML: 1.5%</title></path>
-<path class="slice" d="M 108.827 44.835 A 155 155 0 0 1 122.214 39.265 L 149.459 114.483 A 75 75 0 0 0 142.981 117.178 Z" fill="url(#p6)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="C: 1.5%" tabindex="0"><title>C: 1.5%</title></path>
-<path class="slice" d="M 122.214 39.265 A 155 155 0 0 1 134.404 35.411 L 155.357 112.618 A 75 75 0 0 0 149.459 114.483 Z" fill="url(#p7)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="MATLAB: 1.3%" tabindex="0"><title>MATLAB: 1.3%</title></path>
-<path class="slice" d="M 134.404 35.411 A 155 155 0 0 1 144.659 32.999 L 160.319 111.451 A 75 75 0 0 0 155.357 112.618 Z" fill="url(#p8)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="TypeScript: 1.1%" tabindex="0"><title>TypeScript: 1.1%</title></path>
-<path class="slice" d="M 144.659 32.999 A 155 155 0 0 1 153.452 31.505 L 164.574 110.728 A 75 75 0 0 0 160.319 111.451 Z" fill="url(#p9)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="CSS: 0.9%" tabindex="0"><title>CSS: 0.9%</title></path>
-<path class="slice" d="M 153.452 31.505 A 155 155 0 0 1 175.000 30.000 L 175.000 110.000 A 75 75 0 0 0 164.574 110.728 Z" fill="url(#p10)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Other: 2.2%" tabindex="0"><title>Other: 2.2%</title></path>
+<path class="slice" d="M 175.000 30.000 A 155 155 0 0 1 292.000 286.666 L 231.613 234.193 A 75 75 0 0 0 175.000 110.000 Z" fill="url(#p0)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Jupyter Notebook: 36.4%" tabindex="0"><title>Jupyter Notebook: 36.4%</title></path>
+<text x="279.6" y="137.3" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">36.4%</text>
+<path class="slice" d="M 292.000 286.666 A 155 155 0 0 1 31.626 243.898 L 105.626 213.499 A 75 75 0 0 0 231.613 234.193 Z" fill="url(#p1)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="TeX: 32.4%" tabindex="0"><title>TeX: 32.4%</title></path>
+<text x="156.4" y="298.5" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">32.4%</text>
+<path class="slice" d="M 31.626 243.898 A 155 155 0 0 1 30.982 127.696 L 105.314 157.272 A 75 75 0 0 0 105.626 213.499 Z" fill="url(#p2)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="C++: 12.2%" tabindex="0"><title>C++: 12.2%</title></path>
+<text x="60.0" y="185.6" font-size="11" fill="var(--pct-label-inside-fill)" text-anchor="middle" dominant-baseline="middle" aria-hidden="true">12.2%</text>
+<path class="slice" d="M 30.982 127.696 A 155 155 0 0 1 68.977 71.933 L 123.698 130.290 A 75 75 0 0 0 105.314 157.272 Z" fill="url(#p3)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Python: 7.0%" tabindex="0"><title>Python: 7.0%</title></path>
+<path class="slice" d="M 68.977 71.933 A 155 155 0 0 1 96.207 51.521 L 136.875 120.413 A 75 75 0 0 0 123.698 130.290 Z" fill="url(#p4)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="JavaScript: 3.5%" tabindex="0"><title>JavaScript: 3.5%</title></path>
+<path class="slice" d="M 96.207 51.521 A 155 155 0 0 1 109.181 44.669 L 143.152 117.098 A 75 75 0 0 0 136.875 120.413 Z" fill="url(#p5)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="HTML: 1.5%" tabindex="0"><title>HTML: 1.5%</title></path>
+<path class="slice" d="M 109.181 44.669 A 155 155 0 0 1 122.362 39.212 L 149.530 114.457 A 75 75 0 0 0 143.152 117.098 Z" fill="url(#p6)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="C: 1.5%" tabindex="0"><title>C: 1.5%</title></path>
+<path class="slice" d="M 122.362 39.212 A 155 155 0 0 1 135.043 35.239 L 155.666 112.535 A 75 75 0 0 0 149.530 114.457 Z" fill="url(#p7)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="MATLAB: 1.4%" tabindex="0"><title>MATLAB: 1.4%</title></path>
+<path class="slice" d="M 135.043 35.239 A 155 155 0 0 1 145.141 32.903 L 160.552 111.405 A 75 75 0 0 0 155.666 112.535 Z" fill="url(#p8)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="TypeScript: 1.1%" tabindex="0"><title>TypeScript: 1.1%</title></path>
+<path class="slice" d="M 145.141 32.903 A 155 155 0 0 1 153.797 31.457 L 164.741 110.705 A 75 75 0 0 0 160.552 111.405 Z" fill="url(#p9)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="CSS: 0.9%" tabindex="0"><title>CSS: 0.9%</title></path>
+<path class="slice" d="M 153.797 31.457 A 155 155 0 0 1 175.000 30.000 L 175.000 110.000 A 75 75 0 0 0 164.741 110.705 Z" fill="url(#p10)" stroke="var(--slice-edge)" stroke-width="1.5" role="img" aria-label="Other: 2.2%" tabindex="0"><title>Other: 2.2%</title></path>
 <circle cx="175" cy="185" r="75" fill="var(--center-fill)"/><text x="175" y="177" font-size="13" font-weight="bold" text-anchor="middle" fill="var(--center-text-main)">Languages</text><text x="175" y="197" font-size="11" text-anchor="middle" fill="var(--center-text-sub)">11 shown</text>
 <rect x="355" y="30" width="14" height="14" fill="url(#p0)" rx="2" stroke="#DA5B0B" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="41" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">Jupyter Notebook 36.7%</text>
+<text x="377" y="41" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">Jupyter Notebook 36.4%</text>
 <rect x="355" y="58" width="14" height="14" fill="url(#p1)" rx="2" stroke="#3D6117" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="69" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">TeX 31.7%</text>
+<text x="377" y="69" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">TeX 32.4%</text>
 <rect x="355" y="86" width="14" height="14" fill="url(#p2)" rx="2" stroke="#00599C" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="97" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">C++ 12.4%</text>
+<text x="377" y="97" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">C++ 12.2%</text>
 <rect x="355" y="114" width="14" height="14" fill="url(#p3)" rx="2" stroke="#3776AB" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="125" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">Python 7.1%</text>
+<text x="377" y="125" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">Python 7.0%</text>
 <rect x="355" y="142" width="14" height="14" fill="url(#p4)" rx="2" stroke="#F7DF1E" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="153" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">JavaScript 3.6%</text>
+<text x="377" y="153" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">JavaScript 3.5%</text>
 <rect x="355" y="170" width="14" height="14" fill="url(#p5)" rx="2" stroke="#E44D26" stroke-width="1" aria-hidden="true"/>
 <text x="377" y="181" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">HTML 1.5%</text>
 <rect x="355" y="198" width="14" height="14" fill="url(#p6)" rx="2" stroke="#555555" stroke-width="1" aria-hidden="true"/>
 <text x="377" y="209" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">C 1.5%</text>
 <rect x="355" y="226" width="14" height="14" fill="url(#p7)" rx="2" stroke="#999999" stroke-width="1" aria-hidden="true"/>
-<text x="377" y="237" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">MATLAB 1.3%</text>
+<text x="377" y="237" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">MATLAB 1.4%</text>
 <rect x="355" y="254" width="14" height="14" fill="url(#p8)" rx="2" stroke="#3178C6" stroke-width="1" aria-hidden="true"/>
 <text x="377" y="265" font-size="13" aria-hidden="true" fill="var(--legend-text-fill)">TypeScript 1.1%</text>
 <rect x="355" y="282" width="14" height="14" fill="url(#p9)" rx="2" stroke="#1572B6" stroke-width="1" aria-hidden="true"/>
