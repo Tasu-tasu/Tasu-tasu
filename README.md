@@ -2,11 +2,16 @@
 
 ## Language Distribution / 言語の内訳
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: nowrap;">
-  <img src="./languages.svg" height="300" />
-  <img src="./top_languages_bar.svg" height="300" />
-</div>
-
+<table style="width: 100%; border: 0 !important; border-collapse: collapse; background: transparent !important;">
+  <tr style="border: 0 !important; background: transparent !important;">
+    <td style="width: 50%; text-align: center; border: 0 !important; padding: 0 10px 0 0; background: transparent !important;">
+      <img src="./languages.svg" style="max-width: 100%; height: auto; max-height: 300px;" />
+    </td>
+    <td style="width: 50%; text-align: center; border: 0 !important; padding: 0 0 0 10px; background: transparent !important;">
+      <img src="./top_languages_bar.svg" style="max-width: 100%; height: auto; max-height: 300px;" />
+    </td>
+  </tr>
+</table>
 
 ## Programming / プログラミング言語
 
