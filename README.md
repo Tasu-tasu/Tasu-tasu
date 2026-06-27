@@ -2,9 +2,9 @@
 
 ## Language Distribution / 言語の内訳
 
-<div align="center" style="display: flex; justify-content: center; gap: 20px;">
-  <img src="./languages.svg" width="45%" />
-  <img src="./top_languages_bar.svg" width="45%" />
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: nowrap;">
+  <img src="./languages.svg" height="300" />
+  <img src="./top_languages_bar.svg" height="300" />
 </div>
 
 
