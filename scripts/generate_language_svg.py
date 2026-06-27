@@ -12,7 +12,7 @@ import html
 import math
 import os
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 try:
     import requests as _requests
@@ -217,7 +217,7 @@ def fetch_recent_repo_languages(days_back: int = 90) -> dict:
         page += 1
 
     # Filter repos by pushed_at timestamp (last N days)
-    cutoff_date = datetime.now(datetime.timezone.utc) - timedelta(days=days_back)
+    cutoff_date = datetime.now(timezone.utc) - timedelta(days=days_back)
     filtered_repos = []
     
     for repo in repos:
