@@ -1,7 +1,8 @@
 """
 Generate a single language distribution donut-chart SVG from all GitHub repositories via the GitHub API.
+Also generates a horizontal bar chart of the top 5 languages.
 Falls back to scanning the local repository if GH_TOKEN is not set.
-Writes: languages.svg at the repo root.
+Writes: languages.svg and top_languages_bar.svg at the repo root.
 
 Note / 表記:
 This script was created or updated with the assistance of an AI model.
@@ -11,6 +12,7 @@ import html
 import math
 import os
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 try:
     import requests as _requests
@@ -19,7 +21,8 @@ except ImportError:
 
 GH_TOKEN = os.environ.get('GH_TOKEN')
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-OUTPUT = os.path.join(REPO_ROOT, 'languages.svg')
+OUTPUT_DONUT = os.path.join(REPO_ROOT, 'languages.svg')
+OUTPUT_BAR = os.path.join(REPO_ROOT, 'top_languages_bar.svg')
 
 # Official / iconic language colors (sourced from github-linguist and community conventions)
 LANG_COLORS: dict[str, str] = {
@@ -189,6 +192,65 @@ def fetch_all_repo_languages() -> dict:
     return dict(totals)
 
 
+def fetch_recent_repo_languages(days_back: int = 90) -> dict:
+    """
+    Aggregate language bytes across repos updated in the last N days.
+    Default: 90 days (approximately 3 months).
+    """
+    req = _requests
+    headers = _gh_headers()
+
+    repos, page = [], 1
+    # Fetch all repos
+    while True:
+        r = req.get(
+            'https://api.github.com/user/repos',
+            headers=headers,
+            params={'per_page': 100, 'page': page, 'affiliation': 'owner,collaborator,organization_member'},
+            timeout=30,
+        )
+        r.raise_for_status()
+        data = r.json()
+        if not data:
+            break
+        repos.extend(data)
+        page += 1
+
+    # Filter repos by pushed_at timestamp (last N days)
+    cutoff_date = datetime.utcnow() - timedelta(days=days_back)
+    filtered_repos = []
+    
+    for repo in repos:
+        pushed_at_str = repo.get('pushed_at')
+        if not pushed_at_str:
+            continue
+        # Parse ISO 8601 timestamp (e.g., "2024-06-15T10:30:00Z")
+        try:
+            pushed_at = datetime.fromisoformat(pushed_at_str.replace('Z', '+00:00'))
+        except (ValueError, AttributeError):
+            continue
+        
+        if pushed_at >= cutoff_date:
+            filtered_repos.append(repo)
+    
+    print(f'Filtered to {len(filtered_repos)} repositories updated in the last {days_back} days')
+
+    totals: dict = defaultdict(int)
+    for repo in filtered_repos:
+        full_name = repo.get('full_name')
+        if not full_name:
+            continue
+        r = req.get(
+            f'https://api.github.com/repos/{full_name}/languages',
+            headers=headers,
+            timeout=30,
+        )
+        if r.status_code == 200:
+            for lang, byte_count in r.json().items():
+                totals[lang] += byte_count
+    return dict(totals)
+
+
 # ---------------------------------------------------------------------------
 # Local fallback
 # ---------------------------------------------------------------------------
@@ -259,7 +321,7 @@ def scan_bytes(root: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# SVG pie chart
+# SVG pie chart (donut)
 # ---------------------------------------------------------------------------
 
 def _top_items(counter: dict, n: int = 8):
@@ -441,17 +503,153 @@ def make_donut_svg(counter: dict, title: str, outpath: str) -> None:
 
 
 # ---------------------------------------------------------------------------
+# SVG horizontal bar chart (top 5 languages)
+# ---------------------------------------------------------------------------
+
+def make_bar_chart_svg(counter: dict, outpath: str) -> None:
+    """Write an accessible horizontal bar chart SVG of top 5 languages to *outpath*."""
+    total = sum(counter.values())
+    
+    if total == 0:
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" width="350" height="60" '
+            'role="img" aria-label="No data found">\n'
+            '<text x="10" y="30" font-family="sans-serif" font-size="14">No data found</text>\n'
+            '</svg>\n'
+        )
+        with open(outpath, 'w') as f:
+            f.write(svg)
+        return
+
+    # Get top 5 languages
+    top = _top_items(counter, n=5)
+    
+    # Layout parameters
+    width = 380
+    height = 280
+    margin_left = 110
+    margin_right = 30
+    margin_top = 30
+    margin_bottom = 30
+    bar_height = 35
+    chart_height = len(top) * bar_height
+    
+    # Build SVG
+    svg_id = os.path.splitext(os.path.basename(outpath))[0]
+    title_id = f'{svg_id}-title'
+    desc_id = f'{svg_id}-desc'
+    
+    desc_text = 'Top 5 languages by bytes: ' + ', '.join(
+        f'{lang}: {size / total * 100:.1f}%' for lang, size in top
+    )
+    
+    style = (
+        '<style>'
+        ':root{'
+        '--bg-fill:#f0f0f0;'
+        '--title-fill:#000000;'
+        '--text-fill:#333333;'
+        '--grid-line:#e0e0e0;'
+        '--bar-bg:#d0d0d0;'
+        '}'
+        '@media (prefers-color-scheme: dark){:root{'
+        '--bg-fill:#0b0b0b;'
+        '--title-fill:#ffffff;'
+        '--text-fill:#dddddd;'
+        '--grid-line:#333333;'
+        '--bar-bg:#444444;'
+        '}}'
+        'text{font-family:sans-serif;} '
+        '.bar-label{font-size:12;} '
+        '.bar-value{font-size:11;} '
+        '</style>'
+    )
+    
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'width="{width}" height="{height}" '
+        f'role="img" aria-labelledby="{title_id} {desc_id}">',
+        f'<title id="{title_id}">Top 5 Languages</title>',
+        f'<desc id="{desc_id}">{html.escape(desc_text)}</desc>',
+        style,
+        f'<rect width="{width}" height="{height}" fill="var(--bg-fill)"/>',
+        f'<text x="{width // 2}" y="20" font-size="14" font-weight="bold" '
+        f'text-anchor="middle" fill="var(--title-fill)">Top 5 Languages</text>',
+    ]
+    
+    # Chart area background
+    chart_x = margin_left
+    chart_y = margin_top + 10
+    chart_width = width - margin_left - margin_right
+    
+    parts.append(
+        f'<rect x="{chart_x}" y="{chart_y}" width="{chart_width}" height="{chart_height}" '
+        f'fill="none" stroke="var(--grid-line)" stroke-width="1"/>'
+    )
+    
+    # Bars
+    max_width = chart_width * 0.9
+    for i, (lang, size) in enumerate(top):
+        frac = size / total
+        bar_y = chart_y + i * bar_height + 5
+        bar_width = frac * max_width
+        color = _color(lang, i)
+        pct_label = f'{frac * 100:.1f}%'
+        
+        # Background bar
+        parts.append(
+            f'<rect x="{chart_x + 5}" y="{bar_y}" width="{max_width}" height="{bar_height - 10}" '
+            f'fill="var(--bar-bg)" rx="2"/>'
+        )
+        
+        # Colored bar
+        parts.append(
+            f'<rect x="{chart_x + 5}" y="{bar_y}" width="{bar_width}" height="{bar_height - 10}" '
+            f'fill="{color}" rx="2"/>'
+        )
+        
+        # Language label (left)
+        parts.append(
+            f'<text x="{chart_x - 8}" y="{bar_y + (bar_height - 10) // 2 + 4}" '
+            f'text-anchor="end" class="bar-label" fill="var(--text-fill)">'
+            f'{html.escape(lang)}</text>'
+        )
+        
+        # Percentage label (right)
+        parts.append(
+            f'<text x="{chart_x + 5 + bar_width + 8}" y="{bar_y + (bar_height - 10) // 2 + 4}" '
+            f'class="bar-value" fill="var(--text-fill)">'
+            f'{html.escape(pct_label)}</text>'
+        )
+    
+    parts.append('</svg>')
+    with open(outpath, 'w') as f:
+        f.write('\n'.join(parts))
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
     if GH_TOKEN and _requests is not None:
         print('Fetching language stats from GitHub API …')
-        counts = fetch_all_repo_languages()
-        print(f'Aggregated {len(counts)} language(s) across all repositories')
+        # All repositories for donut chart
+        print('  - Fetching all repositories …')
+        counts_all = fetch_all_repo_languages()
+        print(f'  - Aggregated {len(counts_all)} language(s) across all repositories')
+        
+        # Recent repositories for bar chart
+        print('  - Fetching repositories from last 90 days …')
+        counts_recent = fetch_recent_repo_languages(days_back=90)
+        print(f'  - Aggregated {len(counts_recent)} language(s) across recent repositories')
     else:
         print('GH_TOKEN not set or `requests` unavailable — scanning local repo …')
-        counts = scan_bytes(REPO_ROOT)
+        counts_all = scan_bytes(REPO_ROOT)
+        counts_recent = counts_all  # Use same data for both if no API access
 
-    make_donut_svg(counts, 'Language distribution', OUTPUT)
-    print('Wrote', OUTPUT)
+    make_donut_svg(counts_all, 'Language distribution', OUTPUT_DONUT)
+    print('Wrote', OUTPUT_DONUT)
+    
+    make_bar_chart_svg(counts_recent, OUTPUT_BAR)
+    print('Wrote', OUTPUT_BAR)
