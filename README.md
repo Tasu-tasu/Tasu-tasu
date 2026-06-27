@@ -2,14 +2,11 @@
 
 ## Language Distribution / 言語の内訳
 
-<div align="center">
-  <table>
-    <tr>
-      <td width="50%"><img src="./languages.svg" width="95%" /></td>
-      <td width="50%"><img src="./top_languages_bar.svg" width="95%" /></td>
-    </tr>
-  </table>
+<div align="center" style="display: flex; justify-content: center; gap: 20px;">
+  <img src="./languages.svg" width="45%" />
+  <img src="./top_languages_bar.svg" width="45%" />
 </div>
+
 
 ## Programming / プログラミング言語
 
