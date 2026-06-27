@@ -1,32 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="380" height="280" role="img" aria-labelledby="top_languages_bar-title top_languages_bar-desc">
-<title id="top_languages_bar-title">Top 5 Languages</title>
-<desc id="top_languages_bar-desc">Top 5 languages by bytes: TeX: 61.4%, Python: 18.5%, MATLAB: 6.0%, Jupyter Notebook: 3.8%, TypeScript: 3.8%, Other: 6.4%</desc>
-<style>:root{--bg-fill:#f0f0f0;--title-fill:#000000;--text-fill:#333333;--grid-line:#e0e0e0;--bar-bg:#d0d0d0;}@media (prefers-color-scheme: dark){:root{--bg-fill:#0b0b0b;--title-fill:#ffffff;--text-fill:#dddddd;--grid-line:#333333;--bar-bg:#444444;}}text{font-family:sans-serif;} .bar-label{font-size:12;} .bar-value{font-size:11;} </style>
-<rect width="380" height="280" fill="var(--bg-fill)"/>
-<text x="190" y="20" font-size="14" font-weight="bold" text-anchor="middle" fill="var(--title-fill)">Top 5 Languages</text>
-<rect x="110" y="40" width="240" height="210" fill="none" stroke="var(--grid-line)" stroke-width="1"/>
-<rect x="115" y="45" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="45" width="132.728529877022" height="25" fill="#3D6117" rx="2"/>
-<text x="102" y="61" text-anchor="end" class="bar-label" fill="var(--text-fill)">TeX</text>
-<text x="255.728529877022" y="61" class="bar-value" fill="var(--text-fill)">61.4%</text>
-<rect x="115" y="80" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="80" width="40.05888656427004" height="25" fill="#3776AB" rx="2"/>
-<text x="102" y="96" text-anchor="end" class="bar-label" fill="var(--text-fill)">Python</text>
-<text x="163.05888656427004" y="96" class="bar-value" fill="var(--text-fill)">18.5%</text>
-<rect x="115" y="115" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="115" width="12.930295453385723" height="25" fill="#009e73" rx="2"/>
-<text x="102" y="131" text-anchor="end" class="bar-label" fill="var(--text-fill)">MATLAB</text>
-<text x="135.93029545338572" y="131" class="bar-value" fill="var(--text-fill)">6.0%</text>
-<rect x="115" y="150" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="150" width="8.263356636219829" height="25" fill="#DA5B0B" rx="2"/>
-<text x="102" y="166" text-anchor="end" class="bar-label" fill="var(--text-fill)">Jupyter Notebook</text>
-<text x="131.26335663621984" y="166" class="bar-value" fill="var(--text-fill)">3.8%</text>
-<rect x="115" y="185" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="185" width="8.246823493391846" height="25" fill="#3178C6" rx="2"/>
-<text x="102" y="201" text-anchor="end" class="bar-label" fill="var(--text-fill)">TypeScript</text>
-<text x="131.24682349339184" y="201" class="bar-value" fill="var(--text-fill)">3.8%</text>
-<rect x="115" y="220" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
-<rect x="115" y="220" width="13.772107975710568" height="25" fill="#9CA3AF" rx="2"/>
-<text x="102" y="236" text-anchor="end" class="bar-label" fill="var(--text-fill)">Other</text>
-<text x="136.77210797571058" y="236" class="bar-value" fill="var(--text-fill)">6.4%</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="296" role="img" aria-labelledby="top_languages_bar-title top_languages_bar-desc">
+<title id="top_languages_bar-title">Top languages · last 90 days</title>
+<desc id="top_languages_bar-desc">Top languages · last 90 days. TeX: 61.1%, Python: 19.0%, MATLAB: 6.0%, Jupyter Notebook: 3.8%, TypeScript: 3.8%, Other: 6.3%</desc>
+<style>
+  :root {
+    --bg:      #ffffff;
+    --fg:      #0b0b0b;
+    --fg2:     #444444;
+    --fg3:     #777777;
+    --edge:    rgba(0,0,0,0.08);
+    --slice-border: #ffffff;
+    --ov:      rgba(0,0,0,0.18);
+    --bar-track: #e5e5e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:      #0b0b0b;
+      --fg:      #ffffff;
+      --fg2:     #cccccc;
+      --fg3:     #888888;
+      --edge:    rgba(255,255,255,0.10);
+      --slice-border: #0b0b0b;
+      --ov:      rgba(255,255,255,0.15);
+      --bar-track: #2a2a2a;
+    }
+  }
+  svg { font-family: system-ui, sans-serif; }
+  .label-main { font-size: 13px; fill: var(--fg);  }
+  .label-sub  { font-size: 11px; fill: var(--fg3); }
+  .label-bold { font-size: 13px; fill: var(--fg);  font-weight: 600; }
+  .chart-title { font-size: 14px; fill: var(--fg); font-weight: 600; }
+  .slice { cursor: pointer; }
+  .slice:focus { outline: none; stroke: var(--fg); stroke-width: 2; }
+</style>
+<rect width="560" height="296" fill="var(--bg)"/>
+<defs>
+<pattern id="bp0" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#3D6117"/></pattern>
+<pattern id="bp1" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#3776AB"/><line x1="0" y1="8" x2="8" y2="0" stroke="var(--ov)" stroke-width="1.4"/></pattern>
+<pattern id="bp2" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#e16737"/><line x1="0" y1="4" x2="8" y2="4" stroke="var(--ov)" stroke-width="1.4"/></pattern>
+<pattern id="bp3" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#DA5B0B"/><line x1="4" y1="0" x2="4" y2="8" stroke="var(--ov)" stroke-width="1.4"/></pattern>
+<pattern id="bp4" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#3178C6"/><line x1="0" y1="8" x2="8" y2="0" stroke="var(--ov)" stroke-width="1.4"/><line x1="0" y1="0" x2="8" y2="8" stroke="var(--ov)" stroke-width="1.4"/></pattern>
+<pattern id="bp5" patternUnits="userSpaceOnUse" width="8" height="8"><rect width="8" height="8" fill="#9CA3AF"/><circle cx="4" cy="4" r="1.4" fill="var(--ov)"/></pattern>
+</defs>
+<text x="8" y="24" class="chart-title">Top languages · last 90 days</text>
+<text x="152" y="60" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">TeX</text>
+<rect x="160" y="48" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="48" width="210.1" height="22" rx="4" fill="url(#bp0)" stroke="#3D6117" stroke-width="0.5" role="img" aria-label="TeX: 61.1%" tabindex="0"><title>TeX: 61.1%</title></rect>
+<rect x="160" y="48" width="4.0" height="22" rx="4" fill="#3D6117" aria-hidden="true"/>
+<text x="376.1" y="60" dominant-baseline="middle" class="label-sub" aria-hidden="true">61.1%</text>
+<text x="152" y="98" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">Python</text>
+<rect x="160" y="86" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="86" width="65.4" height="22" rx="4" fill="url(#bp1)" stroke="#3776AB" stroke-width="0.5" role="img" aria-label="Python: 19.0%" tabindex="0"><title>Python: 19.0%</title></rect>
+<rect x="160" y="86" width="4.0" height="22" rx="4" fill="#3776AB" aria-hidden="true"/>
+<text x="231.4" y="98" dominant-baseline="middle" class="label-sub" aria-hidden="true">19.0%</text>
+<text x="152" y="136" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">MATLAB</text>
+<rect x="160" y="124" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="124" width="20.5" height="22" rx="4" fill="url(#bp2)" stroke="#e16737" stroke-width="0.5" role="img" aria-label="MATLAB: 6.0%" tabindex="0"><title>MATLAB: 6.0%</title></rect>
+<rect x="160" y="124" width="4.0" height="22" rx="4" fill="#e16737" aria-hidden="true"/>
+<text x="186.5" y="136" dominant-baseline="middle" class="label-sub" aria-hidden="true">6.0%</text>
+<text x="152" y="174" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">Jupyter Notebook</text>
+<rect x="160" y="162" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="162" width="13.1" height="22" rx="4" fill="url(#bp3)" stroke="#DA5B0B" stroke-width="0.5" role="img" aria-label="Jupyter Notebook: 3.8%" tabindex="0"><title>Jupyter Notebook: 3.8%</title></rect>
+<rect x="160" y="162" width="4.0" height="22" rx="4" fill="#DA5B0B" aria-hidden="true"/>
+<text x="179.1" y="174" dominant-baseline="middle" class="label-sub" aria-hidden="true">3.8%</text>
+<text x="152" y="212" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">TypeScript</text>
+<rect x="160" y="200" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="200" width="13.1" height="22" rx="4" fill="url(#bp4)" stroke="#3178C6" stroke-width="0.5" role="img" aria-label="TypeScript: 3.8%" tabindex="0"><title>TypeScript: 3.8%</title></rect>
+<rect x="160" y="200" width="4.0" height="22" rx="4" fill="#3178C6" aria-hidden="true"/>
+<text x="179.1" y="212" dominant-baseline="middle" class="label-sub" aria-hidden="true">3.8%</text>
+<text x="152" y="250" text-anchor="end" dominant-baseline="middle" class="label-main" aria-hidden="true" clip-path="none">Other</text>
+<rect x="160" y="238" width="344" height="22" rx="4" fill="var(--bar-track)" aria-hidden="true"/>
+<rect x="160" y="238" width="21.8" height="22" rx="4" fill="url(#bp5)" stroke="#9CA3AF" stroke-width="0.5" role="img" aria-label="Other: 6.3%" tabindex="0"><title>Other: 6.3%</title></rect>
+<rect x="160" y="238" width="4.0" height="22" rx="4" fill="#9CA3AF" aria-hidden="true"/>
+<text x="187.8" y="250" dominant-baseline="middle" class="label-sub" aria-hidden="true">6.3%</text>
+<rect x="8" y="278" width="10" height="10" rx="2" fill="url(#bp0)" stroke="#3D6117" stroke-width="0.5" aria-hidden="true"/>
+<text x="22" y="287" class="label-sub" aria-hidden="true">TeX</text>
+<rect x="53.5" y="278" width="10" height="10" rx="2" fill="url(#bp1)" stroke="#3776AB" stroke-width="0.5" aria-hidden="true"/>
+<text x="67.5" y="287" class="label-sub" aria-hidden="true">Python</text>
+<rect x="118.5" y="278" width="10" height="10" rx="2" fill="url(#bp2)" stroke="#e16737" stroke-width="0.5" aria-hidden="true"/>
+<text x="132.5" y="287" class="label-sub" aria-hidden="true">MATLAB</text>
+<rect x="183.5" y="278" width="10" height="10" rx="2" fill="url(#bp3)" stroke="#DA5B0B" stroke-width="0.5" aria-hidden="true"/>
+<text x="197.5" y="287" class="label-sub" aria-hidden="true">Jupyter Noteb…</text>
+<rect x="300.5" y="278" width="10" height="10" rx="2" fill="url(#bp4)" stroke="#3178C6" stroke-width="0.5" aria-hidden="true"/>
+<text x="314.5" y="287" class="label-sub" aria-hidden="true">TypeScript</text>
+<rect x="391.5" y="278" width="10" height="10" rx="2" fill="url(#bp5)" stroke="#9CA3AF" stroke-width="0.5" aria-hidden="true"/>
+<text x="405.5" y="287" class="label-sub" aria-hidden="true">Other</text>
 </svg>
