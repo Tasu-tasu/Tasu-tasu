@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="280" role="img" aria-labelledby="top_languages_bar-title top_languages_bar-desc">
+<title id="top_languages_bar-title">Top 5 Languages</title>
+<desc id="top_languages_bar-desc">Top 5 languages by bytes: TeX: 61.4%, Python: 18.5%, MATLAB: 6.0%, Jupyter Notebook: 3.8%, TypeScript: 3.8%, Other: 6.4%</desc>
+<style>:root{--bg-fill:#f0f0f0;--title-fill:#000000;--text-fill:#333333;--grid-line:#e0e0e0;--bar-bg:#d0d0d0;}@media (prefers-color-scheme: dark){:root{--bg-fill:#0b0b0b;--title-fill:#ffffff;--text-fill:#dddddd;--grid-line:#333333;--bar-bg:#444444;}}text{font-family:sans-serif;} .bar-label{font-size:12;} .bar-value{font-size:11;} </style>
+<rect width="380" height="280" fill="var(--bg-fill)"/>
+<text x="190" y="20" font-size="14" font-weight="bold" text-anchor="middle" fill="var(--title-fill)">Top 5 Languages</text>
+<rect x="110" y="40" width="240" height="210" fill="none" stroke="var(--grid-line)" stroke-width="1"/>
+<rect x="115" y="45" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="45" width="132.728529877022" height="25" fill="#3D6117" rx="2"/>
+<text x="102" y="61" text-anchor="end" class="bar-label" fill="var(--text-fill)">TeX</text>
+<text x="255.728529877022" y="61" class="bar-value" fill="var(--text-fill)">61.4%</text>
+<rect x="115" y="80" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="80" width="40.05888656427004" height="25" fill="#3776AB" rx="2"/>
+<text x="102" y="96" text-anchor="end" class="bar-label" fill="var(--text-fill)">Python</text>
+<text x="163.05888656427004" y="96" class="bar-value" fill="var(--text-fill)">18.5%</text>
+<rect x="115" y="115" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="115" width="12.930295453385723" height="25" fill="#009e73" rx="2"/>
+<text x="102" y="131" text-anchor="end" class="bar-label" fill="var(--text-fill)">MATLAB</text>
+<text x="135.93029545338572" y="131" class="bar-value" fill="var(--text-fill)">6.0%</text>
+<rect x="115" y="150" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="150" width="8.263356636219829" height="25" fill="#DA5B0B" rx="2"/>
+<text x="102" y="166" text-anchor="end" class="bar-label" fill="var(--text-fill)">Jupyter Notebook</text>
+<text x="131.26335663621984" y="166" class="bar-value" fill="var(--text-fill)">3.8%</text>
+<rect x="115" y="185" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="185" width="8.246823493391846" height="25" fill="#3178C6" rx="2"/>
+<text x="102" y="201" text-anchor="end" class="bar-label" fill="var(--text-fill)">TypeScript</text>
+<text x="131.24682349339184" y="201" class="bar-value" fill="var(--text-fill)">3.8%</text>
+<rect x="115" y="220" width="216.0" height="25" fill="var(--bar-bg)" rx="2"/>
+<rect x="115" y="220" width="13.772107975710568" height="25" fill="#9CA3AF" rx="2"/>
+<text x="102" y="236" text-anchor="end" class="bar-label" fill="var(--text-fill)">Other</text>
+<text x="136.77210797571058" y="236" class="bar-value" fill="var(--text-fill)">6.4%</text>
+</svg>
