@@ -47,7 +47,8 @@ jobs:
             git add top_languages_bar.svg
             git add README.md
             git commit -m "Update language statistics"
-            git push
+            git pull --rebase origin main
+            git push origin main
           else
             echo "No changes"
           fi
