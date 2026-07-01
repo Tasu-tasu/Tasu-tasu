@@ -20,6 +20,7 @@ from __future__ import annotations
 import html
 import math
 import os
+import hashlib
 from collections import defaultdict
 from datetime import datetime, timedelta
 
@@ -78,8 +79,13 @@ _FALLBACK_PALETTE = [
     "#6b7280", "#216a94", "#bd3b24", "#718096", "#c2ab25"
 ]
 
-def _lang_color(lang: str, idx: int = 0) -> str:
-    return LANG_COLORS.get(lang, _FALLBACK_PALETTE[idx % len(_FALLBACK_PALETTE)])
+def _lang_color(lang: str) -> str:
+    if lang in LANG_COLORS:
+        return LANG_COLORS[lang]
+
+    digest = hashlib.md5(lang.encode("utf-8")).digest()
+    idx = digest[0] % len(_FALLBACK_PALETTE)
+    return _FALLBACK_PALETTE[idx]
 
 def _top_items(counter: dict, n: int = 5) -> list[tuple[str, int]]:
     ranked = sorted(counter.items(), key=lambda x: x[1], reverse=True)
@@ -92,6 +98,22 @@ def _top_items(counter: dict, n: int = 5) -> list[tuple[str, int]]:
     if rest > 0:
         top.append(("Other", rest))
     return top
+    
+def split_language_name(name: str) -> tuple[str, str | None]:
+    words = name.split()
+
+    if len(words) <= 1:
+        return name, None
+
+    if len(name) <= 12:
+        return name, None
+
+    mid = len(words) // 2
+
+    first = " ".join(words[:mid])
+    second = " ".join(words[mid:])
+
+    return first, second
 
 def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_back: int = 90) -> None:
     total_all = sum(counts_all.values())
@@ -133,34 +155,46 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         pct = size / total_all
         length = pct * donut_circumference
         offset = donut_circumference - length
-        color = _lang_color(lang, i)
+        color = _lang_color(lang)
         # @keyframes内部にカラーの初期値と最終値を明記し、アニメーション時の色剥げを完全防止
         donut_css.append(f"""
 @keyframes draw-slice-{i} {{
-  from {{ stroke-dashoffset: {donut_circumference:.4f}; stroke: {color}; }}
-  to {{ stroke-dashoffset: {offset:.4f}; stroke: {color}; }}
+  from {{
+      stroke-dashoffset: {donut_circumference:.4f};
+  }}
+  to {{
+      stroke-dashoffset: {offset:.4f};
+  }}
 }}
+
 .slice-{i} {{
   stroke: {color};
   stroke-dasharray: {donut_circumference:.4f};
   stroke-dashoffset: {donut_circumference:.4f};
-  animation: draw-slice-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}}""")
+  animation: draw-slice-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
+}}
+""")
 
     bar_css = []
     for i, (lang, size) in enumerate(top_recent):
-        color = _lang_color(lang, i)
+        color = _lang_color(lang)
         # バーのアニメーション中も色がレンダラーによってリセットされないようfillを固定
         bar_css.append(f"""
 @keyframes grow-bar-{i} {{
-  from {{ transform: scaleX(0); fill: {color}; }}
-  to {{ transform: scaleX(1); fill: {color}; }}
+  from {{
+      transform: scaleX(0);
+  }}
+  to {{
+      transform: scaleX(1);
+  }}
 }}
+
 .bar-{i} {{
   fill: {color};
   transform-origin: {grid_x0}px 0;
-  animation: grow-bar-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}}""")
+  animation: grow-bar-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
+}}
+""")
 
     css = f"""
   :root {{
@@ -263,7 +297,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         pct = size / total_all
         angle = -90.0 + (accumulated_pct * 360.0)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
-        color = _lang_color(lang, i)
+        color = _lang_color(lang)
         parts.append(
             f'<circle class="slice-{i}" cx="{cx}" cy="{cy}" r="75" fill="none" '
             f'stroke="{color}" stroke-width="26" stroke-linecap="butt" '
@@ -287,17 +321,45 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     # 左凡例の位置を調整（Jupyter Notebookなどがきれいに収まり、％とも被らないスペースを確保）
     leg_x = 245
     leg_y0 = 98
-    for i, (lang, size) in enumerate(top_all):
+    leg_y = leg_y0
+    for lang, size in top_all:
         pct = size / total_all
-        ly = leg_y0 + i * 26
-        color = _lang_color(lang, i)
+        line1, line2 = split_language_name(lang)  
+        ly = leg_y
+        color = _lang_color(lang)
         parts.append(
             f'<g class="fade-in">'
-            f'<rect x="{leg_x}" y="{ly + 2}" width="10" height="10" rx="1" fill="{color}" stroke="var(--slice-border)" stroke-width="0.5" />'
-            f'<text x="{leg_x + 18}" y="{ly + 11}" class="font-sans label-text">{html.escape(lang)}</text>'
-            f'<text x="390" y="{ly + 11}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
-            f'</g>'
+            f'<rect x="{leg_x}" y="{ly+2}" width="10" height="10" '
+            f'rx="1" fill="{color}" '
+            f'stroke="var(--slice-border)" stroke-width="0.5"/>'
         )
+
+        parts.append(
+            f'<text x="{leg_x+18}" y="{ly+10}" '
+            f'class="font-sans label-text">{html.escape(line1)}</text>'
+        )
+
+        if line2:
+            parts.append(
+                f'<text x="{leg_x+18}" y="{ly+23}" '
+                f'class="font-sans label-text">{html.escape(line2)}</text>'
+            )
+
+        parts.append(
+            f'<text x="390" y="{ly+16 if line2 else ly+10}" '
+            f'text-anchor="end" '
+            f'class="font-mono val-text">{pct*100:.1f}%</text>'
+        )
+
+        parts.append("</g>")
+
+        if line2:
+
+            leg_y += 38
+
+        else:
+
+            leg_y += 26
 
     # ── Vertical Divider ──────────────────────────────────────────────────────
     parts.append(f'<line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />')
@@ -322,7 +384,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         by = bar_y0 + i * row_h
         bw = max(2, pct * grid_w)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
-        color = _lang_color(lang, i)
+        color = _lang_color(lang)
         parts.append(
             f'<g>'
             f'<text x="420" y="{by + 10}" text-anchor="start" class="font-sans label-text">{html.escape(lang)}</text>'
