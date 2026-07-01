@@ -41,23 +41,47 @@ EXCLUDE_REPOS: list[str] = []  # 例: ["tasu-tasuku/tasu-tasuku"]
 
 # ── language colors (Academic Editorial palette) ────────────────────────────────
 LANG_COLORS: dict[str, str] = {
-    "Python":           "#3f6a8a", # Steel Blue
-    "Jupyter Notebook": "#b85a1c", # Terracotta
-    "Go":               "#2a8f9d", # Sage Teal
-    "JavaScript":       "#c2ab25", # Muted Ochre
-    "TypeScript":       "#2b5b84", # Slate Blue
-    "Java":             "#a86c1e", # Amber
-    "Kotlin":           "#5a3fa8", # Muted Purple
-    "Swift":            "#bd3b24", # Rust Red
-    "C":                "#6b7280", # Cool Grey
-    "C++":              "#2a4e7c", # Classic Navy
-    "MATLAB":           "#bd532b", # Burnt Orange
-    "HTML":             "#b83e23", # Terracotta Red
-    "CSS":              "#216a94", # Ocean Blue
-    "Markdown":         "#1e3b70", # Deep Indigo
-    "Other":            "#718096", # Slate Grey
+    # プログラミング言語（既存）
+    "Python":           "#3f6a8a",  # Steel Blue
+    "Jupyter Notebook": "#b85a1c",  # Terracotta
+    "Go":               "#2a8f9d",  # Sage Teal
+    "JavaScript":       "#c2ab25",  # Muted Ochre
+    "TypeScript":       "#2b5b84",  # Slate Blue
+    "Java":             "#a86c1e",  # Amber
+    "Kotlin":           "#5a3fa8",  # Muted Purple
+    "Swift":            "#bd3b24",  # Rust Red
+    "C":                "#6b7280",  # Cool Grey
+    "C++":              "#2a4e7c",  # Classic Navy
+    "MATLAB":           "#bd532b",  # Burnt Orange
+    
+    # ドキュメント言語
+    "HTML":             "#b83e23",  # Terracotta Red
+    "CSS":              "#216a94",  # Ocean Blue
+    "Markdown":         "#1e3b70",  # Deep Indigo
+    "LaTeX":            "#5b4a8a",  # 学術的な紫（TeX系）
+    "ReStructuredText": "#5a7c8c",  # 青灰色（rst）
+    
+    # プログラミング言語（Wikipedia追加）
+    "Ruby":             "#cc342d",  # ルビレッド（公式ロゴ色）
+    "PHP":              "#777bb3",  # PHP紫（公式ロゴ色）
+    "Rust":             "#ce5a1e",  # Rust褐色（公式ロゴ色）
+    "R":                "#276dc3",  # R水色（公式ロゴ色）
+    "Scala":            "#c22d40",  # Scala赤褐色（公式ロゴ色）
+    "Clojure":          "#63b132",  # Clojure緑（公式ロゴ色）
+    "Haskell":          "#5e5086",  # Haskell紫（公式ロゴ色）
+    "Lua":              "#2c3e70",  # Lua濃紺（公式ロゴ色）
+    "Elixir":           "#4b275f",  # Elixir紫（公式ロゴ色）
+    "F#":               "#378bba",  # F#青（公式ロゴ色）
+    "C#":               "#239120",  # C#緑（Microsoft色）
+    "VB.NET":           "#0078d4",  # VB.NET青（Microsoft色）
+    "Perl":             "#0073b8",  # Perl青（公式ロゴ色）
+    "Groovy":           "#4298b8",  # Groovy水色（公式ロゴ色）
+    "Dart":             "#01579b",  # Dart濃青（Google色）
+    "Kotlin":           "#5a3fa8",  # Kotlin紫（JetBrains色）
+    
+    # その他
+    "Other":            "#718096",  # Slate Grey
 }
-
 _FALLBACK_PALETTE = [
     "#3f6a8a", "#a86c1e", "#2a8f9d", "#bd532b", "#5a3fa8",
     "#6b7280", "#216a94", "#bd3b24", "#718096", "#c2ab25"
@@ -78,6 +102,37 @@ def _top_items(counter: dict, n: int = 5) -> list[tuple[str, int]]:
     if rest > 0:
         top.append(("Other", rest))
     return top
+
+
+def _label_lines(lang: str, max_chars: int = 12) -> list[str]:
+    """Break a language name into at most 2 display lines at a word boundary."""
+    if len(lang) <= max_chars:
+        return [lang]
+    idx = lang[:max_chars + 1].rfind(' ')
+    if idx <= 0:
+        return [lang[:max_chars] + '\u2026']  # no space — hard truncate
+    return [lang[:idx], lang[idx + 1:]]
+
+
+def _add_frame(parts: list, H: int, footer_line2_y: int):
+    """Simple frame: outer border + section dividers."""
+    
+    # ── Outer frame ──────────────────────────────────────────────────
+    # Main border
+    parts.append(f'<rect x="12" y="8" width="776" height="{H - 16}" fill="none" '
+                 f'stroke="var(--border)" stroke-width="2" />')
+    
+    # ── Title / content separator ──────────────────────────────────
+    parts.append(f'<line x1="12" y1="48" x2="788" y2="48" stroke="var(--border)" stroke-width="1" />')
+    
+    # ── Vertical divider (center) ──────────────────────────────────
+    parts.append(f'<line x1="400" y1="48" x2="400" y2="{footer_line2_y}" '
+                 f'stroke="var(--border)" stroke-width="0.75" opacity="0.5" />')
+    
+    # ── Footer separator ──────────────────────────────────────────
+    parts.append(f'<line x1="12" y1="{footer_line2_y}" x2="788" y2="{footer_line2_y}" '
+                 f'stroke="var(--border)" stroke-width="1" />')
+
 
 def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_back: int = 90) -> None:
     total_all = sum(counts_all.values())
@@ -103,6 +158,35 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
 
     top_all = _top_items(counts_all, n=5)
     top_recent = _top_items(counts_recent, n=5)
+
+    # ── Layout constants ──────────────────────────────────────────
+    LEG_MAX_CHARS = 12   # max chars per line in donut legend
+    BAR_MAX_CHARS = 9    # max chars per line in bar chart label (narrower column)
+    LEG_ROW_H_1 = 28     # legend single-line row height
+    LEG_ROW_H_2 = 38     # legend two-line row height
+    BAR_ROW_H_1 = 38     # bar single-line row height
+    BAR_ROW_H_2 = 50     # bar two-line row height
+    leg_x   = 265        # legend left edge x
+    leg_y0  = 90         # legend first row top-y
+    bar_y0  = 92         # bar first row top-y
+    grid_x0 = 520        # bar chart start x
+    grid_w  = 200        # bar chart max bar width
+    cx, cy  = 150, 185   # donut centre
+
+    def _leg_rh(lang: str) -> int:
+        return LEG_ROW_H_2 if len(_label_lines(lang, LEG_MAX_CHARS)) > 1 else LEG_ROW_H_1
+
+    def _bar_rh(lang: str) -> int:
+        return BAR_ROW_H_2 if len(_label_lines(lang, BAR_MAX_CHARS)) > 1 else BAR_ROW_H_1
+
+    leg_bottom     = leg_y0 + sum(_leg_rh(l) for l, _ in top_all)
+    bar_bottom     = bar_y0 + sum(_bar_rh(l) for l, _ in top_recent)
+    content_bottom = max(leg_bottom, bar_bottom, 270)
+    H              = max(370, content_bottom + 75)
+
+    footer_line1_y = content_bottom + 15
+    note_y         = footer_line1_y + 18
+    footer_line2_y = footer_line1_y + 31
 
     # ── SVG & CSS Generation ──────────────────────────────────────────────────
     svg_id = "language-analysis"
@@ -226,24 +310,23 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
 """
 
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" viewBox="0 0 800 360" role="img" aria-labelledby="{svg_id}-title {svg_id}-desc">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{H}" viewBox="0 0 800 {H}" role="img" aria-labelledby="{svg_id}-title {svg_id}-desc">',
         f'<title id="{svg_id}-title">{html.escape(title_text)}</title>',
         f'<desc id="{svg_id}-desc">{html.escape(desc_text)}</desc>',
         f'<style>{css}</style>',
         f'<rect width="100%" height="100%" fill="var(--bg)"/>',
     ]
 
-    # ── Header ────────────────────────────────────────────────────────────────
-    parts.append(f'<line x1="15" y1="12" x2="785" y2="12" stroke="var(--border)" stroke-width="1.5" />')
-    parts.append(f'<text x="15" y="29" class="font-serif main-title">{html.escape(title_text)}</text>')
-    parts.append(f'<line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />')
+    # ── Frame ──────────────────────────────────────────────────────
+    _add_frame(parts, H, footer_line2_y)
 
-    # ── Left Column: Donut Chart ──────────────────────────────────────────────
-    # Title
+    # ── Title ──────────────────────────────────────────────────────
+    parts.append(f'<text x="400" y="29" text-anchor="middle" class="font-serif main-title">{html.escape(title_text)}</text>')
+
+    # ── Left Column: Donut Chart ───────────────────────────────────────────────────────
     parts.append(f'<text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>')
     
     # Donut Slices (r=75, stroke-width=30, cx=150, cy=185)
-    cx, cy = 150, 185
     accumulated_pct = 0.0
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
@@ -259,9 +342,6 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         )
         accumulated_pct += pct
 
-    # Slice separator overlay circles to achieve a clean look without overlapping borders
-    # By using standard stroke-dashoffset we don't have gaps, so we overlay slightly smaller/larger circles if needed,
-    # but a simple inner/outer mask or border circle makes it extremely polished.
     parts.append(f'<circle cx="{cx}" cy="{cy}" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
     parts.append(f'<circle cx="{cx}" cy="{cy}" r="62" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
 
@@ -273,64 +353,86 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         f'</g>'
     )
 
-    # Donut Legend (x=270, y=100)
-    leg_x = 265
-    leg_y0 = 98
+    # Donut Legend (wrapped labels, cumulative y)
+    cumulative_ly = leg_y0
     for i, (lang, size) in enumerate(top_all):
-        pct = size / total_all
-        ly = leg_y0 + i * 26
+        pct   = size / total_all
+        lines = _label_lines(lang, LEG_MAX_CHARS)
+        rh    = LEG_ROW_H_2 if len(lines) > 1 else LEG_ROW_H_1
+        ly    = cumulative_ly
         color = _lang_color(lang, i)
+
+        if len(lines) == 1:
+            swatch_y  = ly + 4
+            label_el  = f'<text x="{leg_x + 18}" y="{ly + 13}" class="font-sans label-text">{html.escape(lines[0])}</text>'
+            pct_y     = ly + 13
+        else:
+            swatch_y  = ly + 10
+            label_el  = (
+                f'<text class="font-sans label-text">'
+                f'<tspan x="{leg_x + 18}" y="{ly + 9}">{html.escape(lines[0])}</tspan>'
+                f'<tspan x="{leg_x + 18}" y="{ly + 22}">{html.escape(lines[1])}</tspan>'
+                f'</text>'
+            )
+            pct_y     = ly + 15
+
         parts.append(
             f'<g class="fade-in">'
-            f'<rect x="{leg_x}" y="{ly + 2}" width="10" height="10" rx="1" fill="{color}" stroke="var(--slice-border)" stroke-width="0.5" />'
-            f'<text x="{leg_x + 18}" y="{ly + 11}" class="font-sans label-text">{html.escape(lang)}</text>'
-            f'<text x="385" y="{ly + 11}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
+            f'<rect x="{leg_x}" y="{swatch_y}" width="10" height="10" rx="1" fill="{color}" stroke="var(--slice-border)" stroke-width="0.5" />'
+            + label_el +
+            f'<text x="385" y="{pct_y}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
             f'</g>'
         )
+        cumulative_ly += rh
 
-    # ── Vertical Divider ──────────────────────────────────────────────────────
-    parts.append(f'<line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />')
-
-    # ── Right Column: Recent Activity ─────────────────────────────────────────
-    # Title
+    # ── Right Column: Recent Activity ─────────────────────────────────────────────────
     parts.append(f'<text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST {days_back} DAYS)</text>')
 
-    # Grid Lines (0%, 25%, 50%, 75%, 100%)
-    grid_x0 = 520
-    grid_w = 200
+    # Grid Lines (dynamic content height)
     for p in [0.0, 0.25, 0.50, 0.75, 1.0]:
         gx = grid_x0 + grid_w * p
-        parts.append(f'<line x1="{gx}" y1="85" x2="{gx}" y2="292" stroke="var(--grid)" stroke-width="0.75" />')
-        # Grid labels (only for 0, 50, 100 to keep it clean)
+        parts.append(f'<line x1="{gx}" y1="82" x2="{gx}" y2="{content_bottom + 5}" stroke="var(--grid)" stroke-width="0.75" />')
         if p in [0.0, 0.5, 1.0]:
-            parts.append(f'<text x="{gx}" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">{int(p*100)}%</text>')
+            parts.append(f'<text x="{gx}" y="77" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">{int(p*100)}%</text>')
 
-    # Bars
-    bar_y0 = 102
-    row_h = 36
-    bar_h = 12
+    # Bars with wrapped labels (cumulative y)
+    cumulative_by = bar_y0
     for i, (lang, size) in enumerate(top_recent):
-        pct = size / total_recent
-        by = bar_y0 + i * row_h
-        bw = max(2, pct * grid_w)
-        aria = html.escape(f"{lang}: {pct*100:.1f}%")
+        pct   = size / total_recent
+        lines = _label_lines(lang, BAR_MAX_CHARS)
+        rh    = BAR_ROW_H_2 if len(lines) > 1 else BAR_ROW_H_1
+        by    = cumulative_by
+        bw    = max(2, pct * grid_w)
+        aria  = html.escape(f"{lang}: {pct*100:.1f}%")
+
+        if len(lines) == 1:
+            bar_rect_y = by + 13
+            label_el   = f'<text x="510" y="{by + 22}" text-anchor="end" class="font-sans label-text">{html.escape(lines[0])}</text>'
+        else:
+            bar_rect_y = by + 19
+            label_el   = (
+                f'<text text-anchor="end" class="font-sans label-text">'
+                f'<tspan x="510" y="{by + 13}">{html.escape(lines[0])}</tspan>'
+                f'<tspan x="510" y="{by + 27}">{html.escape(lines[1])}</tspan>'
+                f'</text>'
+            )
+
         parts.append(
             f'<g>'
-            f'<text x="510" y="{by + 10}" text-anchor="end" class="font-sans label-text">{html.escape(lang)}</text>'
-            f'<rect class="bar bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" '
+            + label_el +
+            f'<rect class="bar bar-{i}" x="{grid_x0}" y="{bar_rect_y}" width="{bw:.2f}" height="12" rx="1" '
             f'role="img" aria-label="{aria}" tabindex="0">'
             f'<title>{aria}</title>'
             f'</rect>'
-            f'<text x="{grid_x0 + bw + 8}" y="{by + 10}" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
+            f'<text x="{grid_x0 + bw + 8}" y="{bar_rect_y + 10}" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
             f'</g>'
         )
+        cumulative_by += rh
 
     # ── Footer ────────────────────────────────────────────────────────────────
-    parts.append(f'<line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />')
     note_txt = f"* Note: All-time language distribution is measured by bytes of code. Recent activity is based on commits over the last {days_back} days."
-    parts.append(f'<text x="15" y="333" class="font-serif note-text" style="font-style: italic;">{html.escape(note_txt)}</text>')
-    parts.append(f'<text x="785" y="333" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>')
-    parts.append(f'<line x1="15" y1="346" x2="785" y2="346" stroke="var(--border)" stroke-width="1.5" />')
+    parts.append(f'<text x="15" y="{note_y}" class="font-serif note-text" style="font-style: italic;">{html.escape(note_txt)}</text>')
+    parts.append(f'<text x="785" y="{note_y}" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>')
 
     parts.append("</svg>")
 
