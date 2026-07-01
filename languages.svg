@@ -66,11 +66,6 @@
     fill: var(--text-muted);
   }
   
-  .bar {
-    transform-origin: 520px 0;
-  }
-  
-  /* Animations */
   @keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -84,60 +79,60 @@
   
 @keyframes draw-slice-0 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 293.7208; }
+  to { stroke-dashoffset: 293.5501; }
 }
 .slice-0 {
-  stroke: #b85a1c;
+  stroke: #b85a1c !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-0 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes draw-slice-1 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 310.6496; }
+  to { stroke-dashoffset: 310.4952; }
 }
 .slice-1 {
-  stroke: #a86c1e;
+  stroke: #a86c1e !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-1 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes draw-slice-2 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 411.5686; }
+  to { stroke-dashoffset: 411.5112; }
 }
 .slice-2 {
-  stroke: #2a4e7c;
+  stroke: #2a4e7c !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-2 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes draw-slice-3 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 432.9782; }
+  to { stroke-dashoffset: 433.3945; }
 }
 .slice-3 {
-  stroke: #3f6a8a;
+  stroke: #3f6a8a !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-3 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes draw-slice-4 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 461.6738; }
+  to { stroke-dashoffset: 461.6646; }
 }
 .slice-4 {
-  stroke: #bd532b;
+  stroke: #bd532b !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-4 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes draw-slice-5 {
   from { stroke-dashoffset: 471.2389; }
-  to { stroke-dashoffset: 445.6035; }
+  to { stroke-dashoffset: 445.5788; }
 }
 .slice-5 {
-  stroke: #718096;
+  stroke: #718096 !important;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-5 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -148,7 +143,8 @@
   to { transform: scaleX(1); }
 }
 .bar-0 {
-  fill: #3f6a8a;
+  fill: #3f6a8a !important;
+  transform-origin: 540px 0;
   animation: grow-bar-0 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes grow-bar-1 {
@@ -156,7 +152,8 @@
   to { transform: scaleX(1); }
 }
 .bar-1 {
-  fill: #3f6a8a;
+  fill: #3f6a8a !important;
+  transform-origin: 540px 0;
   animation: grow-bar-1 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes grow-bar-2 {
@@ -164,7 +161,8 @@
   to { transform: scaleX(1); }
 }
 .bar-2 {
-  fill: #bd532b;
+  fill: #bd532b !important;
+  transform-origin: 540px 0;
   animation: grow-bar-2 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes grow-bar-3 {
@@ -172,7 +170,8 @@
   to { transform: scaleX(1); }
 }
 .bar-3 {
-  fill: #b85a1c;
+  fill: #b85a1c !important;
+  transform-origin: 540px 0;
   animation: grow-bar-3 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes grow-bar-4 {
@@ -180,7 +179,8 @@
   to { transform: scaleX(1); }
 }
 .bar-4 {
-  fill: #2b5b84;
+  fill: #2b5b84 !important;
+  transform-origin: 540px 0;
   animation: grow-bar-4 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 @keyframes grow-bar-5 {
@@ -188,7 +188,8 @@
   to { transform: scaleX(1); }
 }
 .bar-5 {
-  fill: #718096;
+  fill: #718096 !important;
+  transform-origin: 540px 0;
   animation: grow-bar-5 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 </style>
@@ -197,37 +198,37 @@
 <text x="15" y="29" class="font-serif main-title">PROGRAMMING LANGUAGE ANALYSIS &amp; RECENT ACTIVITY</text>
 <line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />
 <text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>
-<circle class="slice-0" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 150 185)" role="img" aria-label="Jupyter Notebook: 37.7%" tabindex="0"><title>Jupyter Notebook: 37.7%</title></circle>
-<circle class="slice-1" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(45.61 150 185)" role="img" aria-label="TeX: 34.1%" tabindex="0"><title>TeX: 34.1%</title></circle>
-<circle class="slice-2" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(168.30 150 185)" role="img" aria-label="C++: 12.7%" tabindex="0"><title>C++: 12.7%</title></circle>
-<circle class="slice-3" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(213.88 150 185)" role="img" aria-label="Python: 8.1%" tabindex="0"><title>Python: 8.1%</title></circle>
-<circle class="slice-4" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(243.11 150 185)" role="img" aria-label="MATLAB: 2.0%" tabindex="0"><title>MATLAB: 2.0%</title></circle>
-<circle class="slice-5" cx="150" cy="185" r="75" fill="none" stroke-width="26" stroke-linecap="butt" transform="rotate(250.42 150 185)" role="img" aria-label="Other: 5.4%" tabindex="0"><title>Other: 5.4%</title></circle>
+<circle class="slice-0" cx="150" cy="185" r="75" fill="none" stroke="#b85a1c" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 150 185)" role="img" aria-label="Jupyter Notebook: 37.7%" tabindex="0"><title>Jupyter Notebook: 37.7%</title></circle>
+<circle class="slice-1" cx="150" cy="185" r="75" fill="none" stroke="#a86c1e" stroke-width="26" stroke-linecap="butt" transform="rotate(45.74 150 185)" role="img" aria-label="TeX: 34.1%" tabindex="0"><title>TeX: 34.1%</title></circle>
+<circle class="slice-2" cx="150" cy="185" r="75" fill="none" stroke="#2a4e7c" stroke-width="26" stroke-linecap="butt" transform="rotate(168.54 150 185)" role="img" aria-label="C++: 12.7%" tabindex="0"><title>C++: 12.7%</title></circle>
+<circle class="slice-3" cx="150" cy="185" r="75" fill="none" stroke="#3f6a8a" stroke-width="26" stroke-linecap="butt" transform="rotate(214.17 150 185)" role="img" aria-label="Python: 8.0%" tabindex="0"><title>Python: 8.0%</title></circle>
+<circle class="slice-4" cx="150" cy="185" r="75" fill="none" stroke="#bd532b" stroke-width="26" stroke-linecap="butt" transform="rotate(243.08 150 185)" role="img" aria-label="MATLAB: 2.0%" tabindex="0"><title>MATLAB: 2.0%</title></circle>
+<circle class="slice-5" cx="150" cy="185" r="75" fill="none" stroke="#718096" stroke-width="26" stroke-linecap="butt" transform="rotate(250.40 150 185)" role="img" aria-label="Other: 5.4%" tabindex="0"><title>Other: 5.4%</title></circle>
 <circle cx="150" cy="185" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>
 <circle cx="150" cy="185" r="62" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>
 <g class="fade-in"><text x="150" y="180" text-anchor="middle" class="font-serif label-text" style="font-weight: bold;">Languages</text><text x="150" y="197" text-anchor="middle" class="font-serif val-text" style="font-style: italic;">All-Time</text></g>
-<g class="fade-in"><rect x="265" y="100" width="10" height="10" rx="1" fill="#b85a1c" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="109" class="font-sans label-text">Jupyter Notebook</text><text x="385" y="109" text-anchor="end" class="font-mono val-text">37.7%</text></g>
-<g class="fade-in"><rect x="265" y="126" width="10" height="10" rx="1" fill="#a86c1e" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="135" class="font-sans label-text">TeX</text><text x="385" y="135" text-anchor="end" class="font-mono val-text">34.1%</text></g>
-<g class="fade-in"><rect x="265" y="152" width="10" height="10" rx="1" fill="#2a4e7c" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="161" class="font-sans label-text">C++</text><text x="385" y="161" text-anchor="end" class="font-mono val-text">12.7%</text></g>
-<g class="fade-in"><rect x="265" y="178" width="10" height="10" rx="1" fill="#3f6a8a" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="187" class="font-sans label-text">Python</text><text x="385" y="187" text-anchor="end" class="font-mono val-text">8.1%</text></g>
-<g class="fade-in"><rect x="265" y="204" width="10" height="10" rx="1" fill="#bd532b" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="213" class="font-sans label-text">MATLAB</text><text x="385" y="213" text-anchor="end" class="font-mono val-text">2.0%</text></g>
-<g class="fade-in"><rect x="265" y="230" width="10" height="10" rx="1" fill="#718096" stroke="var(--slice-border)" stroke-width="0.5" /><text x="283" y="239" class="font-sans label-text">Other</text><text x="385" y="239" text-anchor="end" class="font-mono val-text">5.4%</text></g>
+<g class="fade-in"><rect x="255" y="100" width="10" height="10" rx="1" fill="#b85a1c" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="109" class="font-sans label-text">Jupyter Notebook</text><text x="390" y="109" text-anchor="end" class="font-mono val-text">37.7%</text></g>
+<g class="fade-in"><rect x="255" y="126" width="10" height="10" rx="1" fill="#a86c1e" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="135" class="font-sans label-text">TeX</text><text x="390" y="135" text-anchor="end" class="font-mono val-text">34.1%</text></g>
+<g class="fade-in"><rect x="255" y="152" width="10" height="10" rx="1" fill="#2a4e7c" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="161" class="font-sans label-text">C++</text><text x="390" y="161" text-anchor="end" class="font-mono val-text">12.7%</text></g>
+<g class="fade-in"><rect x="255" y="178" width="10" height="10" rx="1" fill="#3f6a8a" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="187" class="font-sans label-text">Python</text><text x="390" y="187" text-anchor="end" class="font-mono val-text">8.0%</text></g>
+<g class="fade-in"><rect x="255" y="204" width="10" height="10" rx="1" fill="#bd532b" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="213" class="font-sans label-text">MATLAB</text><text x="390" y="213" text-anchor="end" class="font-mono val-text">2.0%</text></g>
+<g class="fade-in"><rect x="255" y="230" width="10" height="10" rx="1" fill="#718096" stroke="var(--slice-border)" stroke-width="0.5" /><text x="273" y="239" class="font-sans label-text">Other</text><text x="390" y="239" text-anchor="end" class="font-mono val-text">5.4%</text></g>
 <line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />
 <text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST 90 DAYS)</text>
-<line x1="520.0" y1="85" x2="520.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
-<text x="520.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">0%</text>
-<line x1="570.0" y1="85" x2="570.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
-<line x1="620.0" y1="85" x2="620.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
-<text x="620.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">50%</text>
-<line x1="670.0" y1="85" x2="670.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
+<line x1="540.0" y1="85" x2="540.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
+<text x="540.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">0%</text>
+<line x1="585.0" y1="85" x2="585.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
+<line x1="630.0" y1="85" x2="630.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
+<text x="630.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">50%</text>
+<line x1="675.0" y1="85" x2="675.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <line x1="720.0" y1="85" x2="720.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <text x="720.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">100%</text>
-<g><text x="510" y="112" text-anchor="end" class="font-sans label-text">TeX</text><rect class="bar bar-0" x="520" y="102" width="123.02" height="12" rx="1" role="img" aria-label="TeX: 61.5%" tabindex="0"><title>TeX: 61.5%</title></rect><text x="651.0226009743598" y="112" class="font-mono val-text fade-in">61.5%</text></g>
-<g><text x="510" y="148" text-anchor="end" class="font-sans label-text">Python</text><rect class="bar bar-1" x="520" y="138" width="36.19" height="12" rx="1" role="img" aria-label="Python: 18.1%" tabindex="0"><title>Python: 18.1%</title></rect><text x="564.1905045685085" y="148" class="font-mono val-text fade-in">18.1%</text></g>
-<g><text x="510" y="184" text-anchor="end" class="font-sans label-text">MATLAB</text><rect class="bar bar-2" x="520" y="174" width="12.72" height="12" rx="1" role="img" aria-label="MATLAB: 6.4%" tabindex="0"><title>MATLAB: 6.4%</title></rect><text x="540.7190340685372" y="184" class="font-mono val-text fade-in">6.4%</text></g>
-<g><text x="510" y="220" text-anchor="end" class="font-sans label-text">Jupyter Notebook</text><rect class="bar bar-3" x="520" y="210" width="7.66" height="12" rx="1" role="img" aria-label="Jupyter Notebook: 3.8%" tabindex="0"><title>Jupyter Notebook: 3.8%</title></rect><text x="535.6590890225967" y="220" class="font-mono val-text fade-in">3.8%</text></g>
-<g><text x="510" y="256" text-anchor="end" class="font-sans label-text">TypeScript</text><rect class="bar bar-4" x="520" y="246" width="7.64" height="12" rx="1" role="img" aria-label="TypeScript: 3.8%" tabindex="0"><title>TypeScript: 3.8%</title></rect><text x="535.6437648851647" y="256" class="font-mono val-text fade-in">3.8%</text></g>
-<g><text x="510" y="292" text-anchor="end" class="font-sans label-text">Other</text><rect class="bar bar-5" x="520" y="282" width="12.77" height="12" rx="1" role="img" aria-label="Other: 6.4%" tabindex="0"><title>Other: 6.4%</title></rect><text x="540.7650064808331" y="292" class="font-mono val-text fade-in">6.4%</text></g>
+<g><text x="530" y="112" text-anchor="end" class="font-sans label-text">TeX</text><rect class="bar-0" x="540" y="102" width="111.49" height="12" rx="1" fill="#3f6a8a" role="img" aria-label="TeX: 61.9%" tabindex="0"><title>TeX: 61.9%</title></rect><text x="659.4941725641147" y="112" class="font-mono val-text fade-in">61.9%</text></g>
+<g><text x="530" y="148" text-anchor="end" class="font-sans label-text">Python</text><rect class="bar-1" x="540" y="138" width="31.54" height="12" rx="1" fill="#3f6a8a" role="img" aria-label="Python: 17.5%" tabindex="0"><title>Python: 17.5%</title></rect><text x="579.5410663843321" y="148" class="font-mono val-text fade-in">17.5%</text></g>
+<g><text x="530" y="184" text-anchor="end" class="font-sans label-text">MATLAB</text><rect class="bar-2" x="540" y="174" width="11.53" height="12" rx="1" fill="#bd532b" role="img" aria-label="MATLAB: 6.4%" tabindex="0"><title>MATLAB: 6.4%</title></rect><text x="559.5271354048342" y="184" class="font-mono val-text fade-in">6.4%</text></g>
+<g><text x="530" y="220" text-anchor="end" class="font-sans label-text">Jupyter Notebook</text><rect class="bar-3" x="540" y="210" width="6.94" height="12" rx="1" fill="#b85a1c" role="img" aria-label="Jupyter Notebook: 3.9%" tabindex="0"><title>Jupyter Notebook: 3.9%</title></rect><text x="554.9413570059968" y="220" class="font-mono val-text fade-in">3.9%</text></g>
+<g><text x="530" y="256" text-anchor="end" class="font-sans label-text">TypeScript</text><rect class="bar-4" x="540" y="246" width="6.93" height="12" rx="1" fill="#2b5b84" role="img" aria-label="TypeScript: 3.8%" tabindex="0"><title>TypeScript: 3.8%</title></rect><text x="554.9274688910511" y="256" class="font-mono val-text fade-in">3.8%</text></g>
+<g><text x="530" y="292" text-anchor="end" class="font-sans label-text">Other</text><rect class="bar-5" x="540" y="282" width="11.57" height="12" rx="1" fill="#718096" role="img" aria-label="Other: 6.4%" tabindex="0"><title>Other: 6.4%</title></rect><text x="559.568799749671" y="292" class="font-mono val-text fade-in">6.4%</text></g>
 <line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />
 <text x="15" y="333" class="font-serif note-text" style="font-style: italic;">* Note: All-time language distribution is measured by bytes of code. Recent activity is based on commits over the last 90 days.</text>
 <text x="785" y="333" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>
