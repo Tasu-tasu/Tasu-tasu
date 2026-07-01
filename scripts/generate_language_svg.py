@@ -33,6 +33,12 @@ GH_TOKEN = os.environ.get("GH_TOKEN")
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUTPUT_SVG = os.path.join(REPO_ROOT, "languages.svg")
 
+# ── settings ───────────────────────────────────────────────────────────────────
+# フォークリポジトリを含めるか (True = 含める)
+INCLUDE_FORKS = False
+# 集計から除外するリポジトリの full_name リスト
+EXCLUDE_REPOS: list[str] = []  # 例: ["tasu-tasuku/tasu-tasuku"]
+
 # ── language colors (Academic Editorial palette) ────────────────────────────────
 LANG_COLORS: dict[str, str] = {
     "Python":           "#3f6a8a", # Steel Blue
@@ -348,8 +354,12 @@ def _list_repos() -> list[dict]:
         r = req.get(
             "https://api.github.com/user/repos",
             headers=headers,
-            params={"per_page": 100, "page": page,
-                    "affiliation": "owner,collaborator,organization_member"},
+            params={
+                "per_page": 100,
+                "page": page,
+                "affiliation": "owner,collaborator,organization_member",
+                "visibility": "all",  # public + private 両方
+            },
             timeout=30,
         )
         r.raise_for_status()
@@ -357,7 +367,23 @@ def _list_repos() -> list[dict]:
         if not data:
             break
         repos.extend(data)
+        print(f"  Page {page}: {len(data)} repos fetched (cumulative: {len(repos)})")
         page += 1
+
+    # フォーク除外
+    if not INCLUDE_FORKS:
+        before = len(repos)
+        repos = [r for r in repos if not r.get("fork", False)]
+        print(f"  Excluded {before - len(repos)} forked repos (INCLUDE_FORKS=False)")
+
+    # 明示的除外リスト
+    if EXCLUDE_REPOS:
+        repos = [r for r in repos if r.get("full_name") not in EXCLUDE_REPOS]
+        print(f"  Applied EXCLUDE_REPOS filter: {EXCLUDE_REPOS}")
+
+    print(f"  → Total repos to analyze: {len(repos)}")
+    for repo in repos:
+        print(f"    - {repo.get('full_name')} (fork={repo.get('fork')}, private={repo.get('private')})")
     return repos
 
 def _aggregate_languages(repos: list[dict]) -> dict:
@@ -379,9 +405,15 @@ def _aggregate_languages(repos: list[dict]) -> dict:
 def fetch_all_repo_languages() -> dict:
     r = _requests.get("https://api.github.com/user", headers=_gh_headers(), timeout=30)
     r.raise_for_status()
-    print(f"Authenticated as: {r.json().get('login', '?')}")
+    user_info = r.json()
+    print(f"Authenticated as: {user_info.get('login', '?')}")
+    print(f"Token scopes: checking via rate_limit endpoint...")
+    rl = _requests.get("https://api.github.com/rate_limit", headers=_gh_headers(), timeout=30)
+    if "X-OAuth-Scopes" in rl.headers:
+        print(f"  OAuth scopes: {rl.headers['X-OAuth-Scopes']}")
+    print("Listing all accessible repositories...")
     repos = _list_repos()
-    print(f"Found {len(repos)} accessible repositories")
+    print(f"Aggregating languages from {len(repos)} repositories...")
     return _aggregate_languages(repos)
 
 def fetch_recent_repo_languages(days_back: int = 90) -> dict:
