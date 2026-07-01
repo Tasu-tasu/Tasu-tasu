@@ -1,21 +1,3 @@
-"""
-Generate a unified language distribution SVG chart from GitHub repositories.
-Concept: Academic Editorial (minimalist, booktabs-style lines, refined typography, smooth animations)
-
-Output: languages.svg (800 × 360 px)
-- Left: Overall language distribution (donut chart + legend)
-- Right: Recent language distribution (horizontal bar chart + grid)
-
-Design system:
-- Font: Georgia/Serif for headers/notes, system-ui/monospace for data.
-- Light/Dark mode via prefers-color-scheme.
-- Refined unified color palette.
-
-Note / 表記:
-This script was created or updated with the assistance of an AI model.
-このスクリプトは AI の支援により作成または更新されました。
-"""
-
 from __future__ import annotations
 import html
 import math
@@ -34,14 +16,11 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUTPUT_SVG = os.path.join(REPO_ROOT, "languages.svg")
 
 # ── settings ───────────────────────────────────────────────────────────────────
-# フォークリポジトリを含めるか (True = 含める)
 INCLUDE_FORKS = False
-# 集計から除外するリポジトリの full_name リスト
-EXCLUDE_REPOS: list[str] = []  # 例: ["tasu-tasuku/tasu-tasuku"]
+EXCLUDE_REPOS: list[str] = []
 
 # ── language colors (Academic Editorial palette) ────────────────────────────────
 LANG_COLORS: dict[str, str] = {
-    # プログラミング言語（既存）
     "Python":           "#3f6a8a",  # Steel Blue
     "Jupyter Notebook": "#b85a1c",  # Terracotta
     "Go":               "#2a8f9d",  # Sage Teal
@@ -53,34 +32,27 @@ LANG_COLORS: dict[str, str] = {
     "C":                "#6b7280",  # Cool Grey
     "C++":              "#2a4e7c",  # Classic Navy
     "MATLAB":           "#bd532b",  # Burnt Orange
-    
-    # ドキュメント言語
     "HTML":             "#b83e23",  # Terracotta Red
     "CSS":              "#216a94",  # Ocean Blue
     "Markdown":         "#1e3b70",  # Deep Indigo
-    "LaTeX":            "#5b4a8a",  # 学術的な紫（TeX系）
-    "ReStructuredText": "#5a7c8c",  # 青灰色（rst）
-    
-    # プログラミング言語（Wikipedia追加）
-    "Ruby":             "#cc342d",  # ルビレッド（公式ロゴ色）
-    "PHP":              "#777bb3",  # PHP紫（公式ロゴ色）
-    "Rust":             "#ce5a1e",  # Rust褐色（公式ロゴ色）
-    "R":                "#276dc3",  # R水色（公式ロゴ色）
-    "Scala":            "#c22d40",  # Scala赤褐色（公式ロゴ色）
-    "Clojure":          "#63b132",  # Clojure緑（公式ロゴ色）
-    "Haskell":          "#5e5086",  # Haskell紫（公式ロゴ色）
-    "Lua":              "#2c3e70",  # Lua濃紺（公式ロゴ色）
-    "Elixir":           "#4b275f",  # Elixir紫（公式ロゴ色）
-    "F#":               "#378bba",  # F#青（公式ロゴ色）
-    "C#":               "#239120",  # C#緑（Microsoft色）
-    "VB.NET":           "#0078d4",  # VB.NET青（Microsoft色）
-    "Perl":             "#0073b8",  # Perl青（公式ロゴ色）
-    "Groovy":           "#4298b8",  # Groovy水色（公式ロゴ色）
-    "Dart":             "#01579b",  # Dart濃青（Google色）
-    "Kotlin":           "#5a3fa8",  # Kotlin紫（JetBrains色）
-    
-    # その他
-    "Other":            "#718096",  # Slate Grey
+    "LaTeX":            "#5b4a8a",  # Academic Purple
+    "ReStructuredText": "#5a7c8c",  # Blue Grey
+    "Ruby":             "#cc342d",
+    "PHP":              "#777bb3",
+    "Rust":             "#ce5a1e",
+    "R":                "#276dc3",
+    "Scala":            "#c22d40",
+    "Clojure":          "#63b132",
+    "Haskell":          "#5e5086",
+    "Lua":              "#2c3e70",
+    "Elixir":           "#4b275f",
+    "F#":               "#378bba",
+    "C#":               "#239120",
+    "VB.NET":           "#0078d4",
+    "Perl":             "#0073b8",
+    "Groovy":           "#4298b8",
+    "Dart":             "#01579b",
+    "Other":            "#718096",
 }
 
 _FALLBACK_PALETTE = [
@@ -92,7 +64,6 @@ def _lang_color(lang: str, idx: int = 0) -> str:
     return LANG_COLORS.get(lang, _FALLBACK_PALETTE[idx % len(_FALLBACK_PALETTE)])
 
 def _top_items(counter: dict, n: int = 5) -> list[tuple[str, int]]:
-    """Return top-n languages, grouping the rest into 'Other'."""
     ranked = sorted(counter.items(), key=lambda x: x[1], reverse=True)
     top, rest = [], 0
     for lang, size in ranked:
@@ -109,7 +80,6 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     total_recent = sum(counts_recent.values())
 
     if total_all == 0:
-        # Empty state
         svg = (
             f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" role="img">\n'
             f'<style>\n'
@@ -129,40 +99,45 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     top_all = _top_items(counts_all, n=5)
     top_recent = _top_items(counts_recent, n=5)
 
-    # ── SVG & CSS Generation ──────────────────────────────────────────────────
     svg_id = "language-analysis"
     title_text = "PROGRAMMING LANGUAGE ANALYSIS & RECENT ACTIVITY"
     desc_text = f"Donut chart shows overall language usage. Bar chart shows activity in the last {days_back} days."
 
-    # Generate animations dynamically
     donut_css = []
-    donut_circumference = 2 * math.pi * 75 # r = 75 -> ~471.2389
+    donut_circumference = 2 * math.pi * 75  # ~471.2389
     
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
         length = pct * donut_circumference
         offset = donut_circumference - length
+        color = _lang_color(lang, i)
         donut_css.append(f"""
 @keyframes draw-slice-{i} {{
   from {{ stroke-dashoffset: {donut_circumference:.4f}; }}
   to {{ stroke-dashoffset: {offset:.4f}; }}
 }}
 .slice-{i} {{
-  stroke: {_lang_color(lang, i)};
+  stroke: {color} !important;
   stroke-dasharray: {donut_circumference:.4f};
   stroke-dashoffset: {donut_circumference:.4f};
   animation: draw-slice-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }}""")
 
+    # 右側コンポーネント用 (開始位置の修正に追従)
+    grid_x0 = 540
+    grid_w = 180
+
     bar_css = []
     for i, (lang, size) in enumerate(top_recent):
+        color = _lang_color(lang, i)
         bar_css.append(f"""
 @keyframes grow-bar-{i} {{
   from {{ transform: scaleX(0); }}
   to {{ transform: scaleX(1); }}
 }}
 .bar-{i} {{
-  fill: {_lang_color(lang, i)};
+  fill: {color} !important;
+  transform-origin: {grid_x0}px 0;
   animation: grow-bar-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }}""")
 
@@ -231,11 +206,6 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     fill: var(--text-muted);
   }}
   
-  .bar {{
-    transform-origin: 520px 0;
-  }}
-  
-  /* Animations */
   @keyframes fade-in {{
     from {{ opacity: 0; }}
     to {{ opacity: 1; }}
@@ -264,19 +234,18 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     parts.append(f'<line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />')
 
     # ── Left Column: Donut Chart ──────────────────────────────────────────────
-    # Title
     parts.append(f'<text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>')
     
-    # Donut Slices (r=75, stroke-width=30, cx=150, cy=185)
     cx, cy = 150, 185
     accumulated_pct = 0.0
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
         angle = -90.0 + (accumulated_pct * 360.0)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
+        color = _lang_color(lang, i)
         parts.append(
             f'<circle class="slice-{i}" cx="{cx}" cy="{cy}" r="75" fill="none" '
-            f'stroke-width="26" stroke-linecap="butt" '
+            f'stroke="{color}" stroke-width="26" stroke-linecap="butt" '
             f'transform="rotate({angle:.2f} {cx} {cy})" '
             f'role="img" aria-label="{aria}" tabindex="0">'
             f'<title>{aria}</title>'
@@ -284,13 +253,9 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         )
         accumulated_pct += pct
 
-    # Slice separator overlay circles to achieve a clean look without overlapping borders
-    # By using standard stroke-dashoffset we don't have gaps, so we overlay slightly smaller/larger circles if needed,
-    # but a simple inner/outer mask or border circle makes it extremely polished.
     parts.append(f'<circle cx="{cx}" cy="{cy}" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
     parts.append(f'<circle cx="{cx}" cy="{cy}" r="62" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
 
-    # Donut Center Label
     parts.append(
         f'<g class="fade-in">'
         f'<text x="{cx}" y="{cy - 5}" text-anchor="middle" class="font-serif label-text" style="font-weight: bold;">Languages</text>'
@@ -298,8 +263,8 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         f'</g>'
     )
 
-    # Donut Legend (x=270, y=100)
-    leg_x = 265
+    # 凡例の位置調整（文字被り対策）
+    leg_x = 255
     leg_y0 = 98
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
@@ -309,7 +274,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
             f'<g class="fade-in">'
             f'<rect x="{leg_x}" y="{ly + 2}" width="10" height="10" rx="1" fill="{color}" stroke="var(--slice-border)" stroke-width="0.5" />'
             f'<text x="{leg_x + 18}" y="{ly + 11}" class="font-sans label-text">{html.escape(lang)}</text>'
-            f'<text x="385" y="{ly + 11}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
+            f'<text x="390" y="{ly + 11}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
             f'</g>'
         )
 
@@ -317,20 +282,16 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     parts.append(f'<line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />')
 
     # ── Right Column: Recent Activity ─────────────────────────────────────────
-    # Title
     parts.append(f'<text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST {days_back} DAYS)</text>')
 
-    # Grid Lines (0%, 25%, 50%, 75%, 100%)
-    grid_x0 = 520
-    grid_w = 200
+    # グリッドの描画 (grid_x0 = 540 に更新)
     for p in [0.0, 0.25, 0.50, 0.75, 1.0]:
         gx = grid_x0 + grid_w * p
         parts.append(f'<line x1="{gx}" y1="85" x2="{gx}" y2="292" stroke="var(--grid)" stroke-width="0.75" />')
-        # Grid labels (only for 0, 50, 100 to keep it clean)
         if p in [0.0, 0.5, 1.0]:
             parts.append(f'<text x="{gx}" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">{int(p*100)}%</text>')
 
-    # Bars
+    # バーの描画 (ラベルの右寄せ位置を530にし、テキスト被りを完全に排除)
     bar_y0 = 102
     row_h = 36
     bar_h = 12
@@ -339,10 +300,11 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         by = bar_y0 + i * row_h
         bw = max(2, pct * grid_w)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
+        color = _lang_color(lang, i)
         parts.append(
             f'<g>'
-            f'<text x="510" y="{by + 10}" text-anchor="end" class="font-sans label-text">{html.escape(lang)}</text>'
-            f'<rect class="bar bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" '
+            f'<text x="530" y="{by + 10}" text-anchor="end" class="font-sans label-text">{html.escape(lang)}</text>'
+            f'<rect class="bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" fill="{color}" '
             f'role="img" aria-label="{aria}" tabindex="0">'
             f'<title>{aria}</title>'
             f'</rect>'
@@ -383,7 +345,7 @@ def _list_repos() -> list[dict]:
                 "per_page": 100,
                 "page": page,
                 "affiliation": "owner,collaborator,organization_member",
-                "visibility": "all",  # public + private 両方
+                "visibility": "all",
             },
             timeout=30,
         )
@@ -392,23 +354,14 @@ def _list_repos() -> list[dict]:
         if not data:
             break
         repos.extend(data)
-        print(f"  Page {page}: {len(data)} repos fetched (cumulative: {len(repos)})")
         page += 1
 
-    # フォーク除外
     if not INCLUDE_FORKS:
-        before = len(repos)
         repos = [r for r in repos if not r.get("fork", False)]
-        print(f"  Excluded {before - len(repos)} forked repos (INCLUDE_FORKS=False)")
 
-    # 明示的除外リスト
     if EXCLUDE_REPOS:
         repos = [r for r in repos if r.get("full_name") not in EXCLUDE_REPOS]
-        print(f"  Applied EXCLUDE_REPOS filter: {EXCLUDE_REPOS}")
 
-    print(f"  → Total repos to analyze: {len(repos)}")
-    for repo in repos:
-        print(f"    - {repo.get('full_name')} (fork={repo.get('fork')}, private={repo.get('private')})")
     return repos
 
 def _aggregate_languages(repos: list[dict]) -> dict:
@@ -430,15 +383,7 @@ def _aggregate_languages(repos: list[dict]) -> dict:
 def fetch_all_repo_languages() -> dict:
     r = _requests.get("https://api.github.com/user", headers=_gh_headers(), timeout=30)
     r.raise_for_status()
-    user_info = r.json()
-    print(f"Authenticated as: {user_info.get('login', '?')}")
-    print(f"Token scopes: checking via rate_limit endpoint...")
-    rl = _requests.get("https://api.github.com/rate_limit", headers=_gh_headers(), timeout=30)
-    if "X-OAuth-Scopes" in rl.headers:
-        print(f"  OAuth scopes: {rl.headers['X-OAuth-Scopes']}")
-    print("Listing all accessible repositories...")
     repos = _list_repos()
-    print(f"Aggregating languages from {len(repos)} repositories...")
     return _aggregate_languages(repos)
 
 def fetch_recent_repo_languages(days_back: int = 90) -> dict:
@@ -453,7 +398,6 @@ def fetch_recent_repo_languages(days_back: int = 90) -> dict:
                 recent.append(repo)
         except (ValueError, AttributeError):
             continue
-    print(f"Filtered to {len(recent)} repos active in last {days_back} days")
     return _aggregate_languages(recent)
 
 # ── Local fallback ─────────────────────────────────────────────────────────────
@@ -521,7 +465,6 @@ if __name__ == "__main__":
     else:
         print("GH_TOKEN not set or `requests` unavailable — scanning local repo …")
         counts_all = scan_bytes(REPO_ROOT)
-        # For local scanning fallback, mock recent as having slightly different ratios or identical
         counts_recent = counts_all
 
     make_unified_svg(counts_all, counts_recent, OUTPUT_SVG, days_back=DAYS_BACK)
