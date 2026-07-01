@@ -1,3 +1,21 @@
+"""
+Generate a unified language distribution SVG chart from GitHub repositories.
+Concept: Academic Editorial (minimalist, booktabs-style lines, refined typography, smooth animations)
+
+Output: languages.svg (800 × 360 px)
+- Left: Overall language distribution (donut chart + legend)
+- Right: Recent language distribution (horizontal bar chart + grid)
+
+Design system:
+- Font: Georgia/Serif for headers/notes, system-ui/monospace for data.
+- Light/Dark mode via prefers-color-scheme.
+- Refined unified color palette.
+
+Note / 表記:
+This script was created or updated with the assistance of an AI model.
+このスクリプトは AI の支援により作成または更新されました。
+"""
+
 from __future__ import annotations
 import html
 import math
@@ -103,6 +121,11 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     title_text = "PROGRAMMING LANGUAGE ANALYSIS & RECENT ACTIVITY"
     desc_text = f"Donut chart shows overall language usage. Bar chart shows activity in the last {days_back} days."
 
+    # 右側コンポーネントの配置変更（テキストが絶対に被らない設計）
+    # 言語名エリアを最大510pxまで確保、515〜555pxに%を綺麗に右配置、570pxからバーを開始
+    grid_x0 = 570
+    grid_w = 190
+
     donut_css = []
     donut_circumference = 2 * math.pi * 75  # ~471.2389
     
@@ -111,32 +134,30 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         length = pct * donut_circumference
         offset = donut_circumference - length
         color = _lang_color(lang, i)
+        # @keyframes内部にカラーの初期値と最終値を明記し、アニメーション時の色剥げを完全防止
         donut_css.append(f"""
 @keyframes draw-slice-{i} {{
-  from {{ stroke-dashoffset: {donut_circumference:.4f}; }}
-  to {{ stroke-dashoffset: {offset:.4f}; }}
+  from {{ stroke-dashoffset: {donut_circumference:.4f}; stroke: {color}; }}
+  to {{ stroke-dashoffset: {offset:.4f}; stroke: {color}; }}
 }}
 .slice-{i} {{
-  stroke: {color} !important;
+  stroke: {color};
   stroke-dasharray: {donut_circumference:.4f};
   stroke-dashoffset: {donut_circumference:.4f};
   animation: draw-slice-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }}""")
 
-    # 右側コンポーネント用 (開始位置の修正に追従)
-    grid_x0 = 540
-    grid_w = 180
-
     bar_css = []
     for i, (lang, size) in enumerate(top_recent):
         color = _lang_color(lang, i)
+        # バーのアニメーション中も色がレンダラーによってリセットされないようfillを固定
         bar_css.append(f"""
 @keyframes grow-bar-{i} {{
-  from {{ transform: scaleX(0); }}
-  to {{ transform: scaleX(1); }}
+  from {{ transform: scaleX(0); fill: {color}; }}
+  to {{ transform: scaleX(1); fill: {color}; }}
 }}
 .bar-{i} {{
-  fill: {color} !important;
+  fill: {color};
   transform-origin: {grid_x0}px 0;
   animation: grow-bar-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }}""")
@@ -236,7 +257,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     # ── Left Column: Donut Chart ──────────────────────────────────────────────
     parts.append(f'<text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>')
     
-    cx, cy = 150, 185
+    cx, cy = 145, 185
     accumulated_pct = 0.0
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
@@ -263,8 +284,8 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         f'</g>'
     )
 
-    # 凡例の位置調整（文字被り対策）
-    leg_x = 255
+    # 左凡例の位置を調整（Jupyter Notebookなどがきれいに収まり、％とも被らないスペースを確保）
+    leg_x = 245
     leg_y0 = 98
     for i, (lang, size) in enumerate(top_all):
         pct = size / total_all
@@ -284,14 +305,15 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     # ── Right Column: Recent Activity ─────────────────────────────────────────
     parts.append(f'<text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST {days_back} DAYS)</text>')
 
-    # グリッドの描画 (grid_x0 = 540 に更新)
+    # グリッドの描画 (grid_x0 = 570)
     for p in [0.0, 0.25, 0.50, 0.75, 1.0]:
         gx = grid_x0 + grid_w * p
         parts.append(f'<line x1="{gx}" y1="85" x2="{gx}" y2="292" stroke="var(--grid)" stroke-width="0.75" />')
         if p in [0.0, 0.5, 1.0]:
             parts.append(f'<text x="{gx}" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">{int(p*100)}%</text>')
 
-    # バーの描画 (ラベルの右寄せ位置を530にし、テキスト被りを完全に排除)
+    # バーの描画
+    # [レイアウト変更] 言語名を420pxから開始（左寄せ）、%を555pxに右寄せ配置、570pxからバーを開始
     bar_y0 = 102
     row_h = 36
     bar_h = 12
@@ -303,12 +325,12 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         color = _lang_color(lang, i)
         parts.append(
             f'<g>'
-            f'<text x="530" y="{by + 10}" text-anchor="end" class="font-sans label-text">{html.escape(lang)}</text>'
+            f'<text x="420" y="{by + 10}" text-anchor="start" class="font-sans label-text">{html.escape(lang)}</text>'
+            f'<text x="555" y="{by + 10}" text-anchor="end" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
             f'<rect class="bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" fill="{color}" '
             f'role="img" aria-label="{aria}" tabindex="0">'
             f'<title>{aria}</title>'
             f'</rect>'
-            f'<text x="{grid_x0 + bw + 8}" y="{by + 10}" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
             f'</g>'
         )
 
