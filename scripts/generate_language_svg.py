@@ -1,18 +1,15 @@
 """
-Generate a unified language distribution SVG chart set from GitHub repositories.
+Generate a unified language distribution SVG chart from GitHub repositories.
+Concept: Academic Editorial (minimalist, booktabs-style lines, refined typography, smooth animations)
 
-Donut chart  → languages.svg          (all repos)
-Bar chart    → top_languages_bar.svg  (repos active in last 90 days)
+Output: languages.svg (800 × 360 px)
+- Left: Overall language distribution (donut chart + legend)
+- Right: Recent language distribution (horizontal bar chart + grid)
 
-Design system
-─────────────
-• Shared CSS variables, pattern defs, and type scale across both SVGs.
-• Light mode  : white  (#ffffff) canvas
-• Dark  mode  : black  (#0b0b0b) canvas   (prefers-color-scheme)
-• Color-blind safe: every slice / bar is filled with color + hatch overlay.
-• Font         : system-ui / sans-serif, 13 px body, 11 px secondary.
-• Stroke width : 0.5 px for all borders.
-• Accessible   : role="img", <title>, <desc>, tabindex="0" on interactive shapes.
+Design system:
+- Font: Georgia/Serif for headers/notes, system-ui/monospace for data.
+- Light/Dark mode via prefers-color-scheme.
+- Refined unified color palette.
 
 Note / 表記:
 This script was created or updated with the assistance of an AI model.
@@ -32,163 +29,39 @@ except ImportError:
     _requests = None
 
 # ── paths ──────────────────────────────────────────────────────────────────────
-GH_TOKEN   = os.environ.get("GH_TOKEN")
-REPO_ROOT  = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUTPUT_DONUT = os.path.join(REPO_ROOT, "languages.svg")
-OUTPUT_BAR   = os.path.join(REPO_ROOT, "top_languages_bar.svg")
+GH_TOKEN = os.environ.get("GH_TOKEN")
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+OUTPUT_SVG = os.path.join(REPO_ROOT, "languages.svg")
 
-# ── language colors (github-linguist palette) ──────────────────────────────────
+# ── language colors (Academic Editorial palette) ────────────────────────────────
 LANG_COLORS: dict[str, str] = {
-    "Python":           "#3776AB",
-    "Jupyter Notebook": "#DA5B0B",
-    "Go":               "#00ADD8",
-    "JavaScript":       "#F7DF1E",
-    "TypeScript":       "#3178C6",
-    "Java":             "#ED8B00",
-    "Kotlin":           "#7F52FF",
-    "Swift":            "#F05138",
-    "Scala":            "#DC322F",
-    "Ruby":             "#CC342D",
-    "Rust":             "#DEA584",
-    "C":                "#555555",
-    "C++":              "#00599C",
-    "C/C++ Header":     "#6E4C13",
-    "C++ Header":       "#00599C",
-    "C#":               "#239120",
-    "PHP":              "#777BB4",
-    "Dart":             "#00B4AB",
-    "Lua":              "#000080",
-    "R":                "#276DC3",
-    "Julia":            "#9558B2",
-    "Haskell":          "#5D4F85",
-    "Elm":              "#60B5CC",
-    "Elixir":           "#6E4A7E",
-    "Erlang":           "#B83998",
-    "F#":               "#B845FC",
-    "Fortran":          "#4D41B1",
-    "Ada":              "#02F88C",
-    "Pascal":           "#E3F171",
-    "Visual Basic":     "#945DB7",
-    "Groovy":           "#4298B8",
-    "CoffeeScript":     "#244776",
-    "Solidity":         "#AA6746",
-    "VHDL":             "#ADB2CB",
-    "Verilog":          "#B2B7F8",
-    "SystemVerilog":    "#DAE1C2",
-    "Assembly":         "#6E4C13",
-    "Lisp":             "#3FB68B",
-    "Common Lisp":      "#3FB68B",
-    "Scheme":           "#1E4AEC",
-    "OCaml":            "#EF7A08",
-    "Perl":             "#0298C3",
-    "Prolog":           "#74283C",
-    "SQL":              "#E38C00",
-    "Shell":            "#89E051",
-    "PowerShell":       "#012456",
-    "MATLAB":           "#e16737",
-    "HTML":             "#E44D26",
-    "CSS":              "#1572B6",
-    "Markdown":         "#083FA1",
-    "XML":              "#0060AC",
-    "JSON":             "#292929",
-    "YAML":             "#CB171E",
-    "TOML":             "#9C4221",
-    "INI":              "#D1DBE0",
-    "Config":           "#AAAAAA",
-    "Text":             "#888888",
-    "SVG":              "#FFB13B",
-    "LaTeX":            "#3D6117",
-    "TeX":              "#3D6117",
-    "BibTeX":           "#778899",
-    "Other":            "#9CA3AF",
+    "Python":           "#3f6a8a", # Steel Blue
+    "Jupyter Notebook": "#b85a1c", # Terracotta
+    "Go":               "#2a8f9d", # Sage Teal
+    "JavaScript":       "#c2ab25", # Muted Ochre
+    "TypeScript":       "#2b5b84", # Slate Blue
+    "Java":             "#a86c1e", # Amber
+    "Kotlin":           "#5a3fa8", # Muted Purple
+    "Swift":            "#bd3b24", # Rust Red
+    "C":                "#6b7280", # Cool Grey
+    "C++":              "#2a4e7c", # Classic Navy
+    "MATLAB":           "#bd532b", # Burnt Orange
+    "HTML":             "#b83e23", # Terracotta Red
+    "CSS":              "#216a94", # Ocean Blue
+    "Markdown":         "#1e3b70", # Deep Indigo
+    "Other":            "#718096", # Slate Grey
 }
 
 _FALLBACK_PALETTE = [
-    "#0072b2", "#e69f00", "#009e73", "#cc79a7",
-    "#56b4e9", "#d55e00", "#f0e442", "#999999",
-    "#332288", "#88ccee",
+    "#3f6a8a", "#a86c1e", "#2a8f9d", "#bd532b", "#5a3fa8",
+    "#6b7280", "#216a94", "#bd3b24", "#718096", "#c2ab25"
 ]
-
-# Hatch patterns (8×8 tile) — same set shared by both charts
-_PATTERNS = [
-    "",  # 0: solid
-    '<line x1="0" y1="8" x2="8" y2="0" stroke="var(--ov)" stroke-width="1.4"/>',                      # 1: /
-    '<line x1="0" y1="4" x2="8" y2="4" stroke="var(--ov)" stroke-width="1.4"/>',                      # 2: ─
-    '<line x1="4" y1="0" x2="4" y2="8" stroke="var(--ov)" stroke-width="1.4"/>',                      # 3: │
-    '<line x1="0" y1="8" x2="8" y2="0" stroke="var(--ov)" stroke-width="1.4"/>'
-    '<line x1="0" y1="0" x2="8" y2="8" stroke="var(--ov)" stroke-width="1.4"/>',                      # 4: ×
-    '<circle cx="4" cy="4" r="1.4" fill="var(--ov)"/>',                                               # 5: dots
-    '<line x1="0" y1="0" x2="8" y2="8" stroke="var(--ov)" stroke-width="1.4"/>',                      # 6: \
-    '<line x1="0" y1="2" x2="8" y2="2" stroke="var(--ov)" stroke-width="1.4"/>'
-    '<line x1="0" y1="6" x2="8" y2="6" stroke="var(--ov)" stroke-width="1.4"/>',                      # 7: ══
-    '<line x1="2" y1="0" x2="2" y2="8" stroke="var(--ov)" stroke-width="1.4"/>'
-    '<line x1="6" y1="0" x2="6" y2="8" stroke="var(--ov)" stroke-width="1.4"/>',                      # 8: ║
-    '<rect x="2" y="2" width="4" height="4" fill="none" stroke="var(--ov)" stroke-width="0.9"/>',     # 9: □
-]
-
 
 def _lang_color(lang: str, idx: int = 0) -> str:
     return LANG_COLORS.get(lang, _FALLBACK_PALETTE[idx % len(_FALLBACK_PALETTE)])
 
-
-# ── shared SVG primitives ──────────────────────────────────────────────────────
-
-# CSS injected into every SVG's <style> block.
-# Keeps colors, typography, and spacing in sync between the two charts.
-_SHARED_CSS = """
-  :root {
-    --bg:      #ffffff;
-    --fg:      #0b0b0b;
-    --fg2:     #444444;
-    --fg3:     #777777;
-    --edge:    rgba(0,0,0,0.08);
-    --slice-border: #ffffff;
-    --ov:      rgba(0,0,0,0.18);
-    --bar-track: #e5e5e5;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg:      #0b0b0b;
-      --fg:      #ffffff;
-      --fg2:     #cccccc;
-      --fg3:     #888888;
-      --edge:    rgba(255,255,255,0.10);
-      --slice-border: #0b0b0b;
-      --ov:      rgba(255,255,255,0.15);
-      --bar-track: #2a2a2a;
-    }
-  }
-  svg { font-family: system-ui, sans-serif; }
-  .label-main { font-size: 13px; fill: var(--fg);  }
-  .label-sub  { font-size: 11px; fill: var(--fg3); }
-  .label-bold { font-size: 13px; fill: var(--fg);  font-weight: 600; }
-  .chart-title { font-size: 14px; fill: var(--fg); font-weight: 600; }
-  .slice { cursor: pointer; }
-  .slice:focus { outline: none; stroke: var(--fg); stroke-width: 2; }
-"""
-
-
-def _make_pattern_defs(items: list[tuple[str, int]], prefix: str = "p") -> str:
-    """Return <defs> with one fill-pattern per language."""
-    lines = ["<defs>"]
-    for i, (lang, _) in enumerate(items):
-        color   = _lang_color(lang, i)
-        hatch   = _PATTERNS[i % len(_PATTERNS)]
-        pid     = f"{prefix}{i}"
-        lines.append(
-            f'<pattern id="{pid}" patternUnits="userSpaceOnUse" width="8" height="8">'
-            f'<rect width="8" height="8" fill="{color}"/>'
-            f'{hatch}'
-            f'</pattern>'
-        )
-    lines.append("</defs>")
-    return "\n".join(lines)
-
-
-# ── data helpers ───────────────────────────────────────────────────────────────
-
-def _top_items(counter: dict, n: int = 8) -> list[tuple[str, int]]:
-    """Return top-n languages (excluding 'Other'), then append an 'Other' bucket."""
+def _top_items(counter: dict, n: int = 5) -> list[tuple[str, int]]:
+    """Return top-n languages, grouping the rest into 'Other'."""
     ranked = sorted(counter.items(), key=lambda x: x[1], reverse=True)
     top, rest = [], 0
     for lang, size in ranked:
@@ -196,304 +69,267 @@ def _top_items(counter: dict, n: int = 8) -> list[tuple[str, int]]:
             top.append((lang, size))
         else:
             rest += size
-    if rest:
+    if rest > 0:
         top.append(("Other", rest))
     return top
 
+def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_back: int = 90) -> None:
+    total_all = sum(counts_all.values())
+    total_recent = sum(counts_recent.values())
 
-# ── Donut chart ────────────────────────────────────────────────────────────────
-
-def make_donut_svg(counter: dict, title: str, outpath: str) -> None:
-    """
-    Unified donut chart.
-
-    Layout  : 560 × dynamic height
-    Donut   : cx=175, r_outer=150, r_inner=70
-    Legend  : right column, x=345
-    """
-    total = sum(counter.values())
-    svg_id   = os.path.splitext(os.path.basename(outpath))[0]
-    title_id = f"{svg_id}-title"
-    desc_id  = f"{svg_id}-desc"
-
-    # ── empty state ───────────────────────────────────────────────────────────
-    if total == 0:
+    if total_all == 0:
+        # Empty state
         svg = (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="560" height="80" '
-            f'role="img" aria-labelledby="{title_id} {desc_id}">\n'
-            f'<style>{_SHARED_CSS}</style>\n'
-            f'<rect width="560" height="80" fill="var(--bg)"/>\n'
-            f'<title id="{title_id}">{html.escape(title)}</title>\n'
-            f'<desc id="{desc_id}">No language data found.</desc>\n'
-            f'<text x="280" y="44" text-anchor="middle" class="label-main">No data found.</text>\n'
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" role="img">\n'
+            f'<style>\n'
+            f'  :root {{ --bg: #faf9f6; --fg: #1a1a1a; }}\n'
+            f'  @media (prefers-color-scheme: dark) {{ :root {{ --bg: #0f0f11; --fg: #f0f0f0; }} }}\n'
+            f'  rect {{ fill: var(--bg); }}\n'
+            f'  text {{ font-family: Georgia, serif; fill: var(--fg); font-size: 14px; text-anchor: middle; }}\n'
+            f'</style>\n'
+            f'<rect width="800" height="360"/>\n'
+            f'<text x="400" y="180">No language data found.</text>\n'
             f'</svg>\n'
         )
         with open(outpath, "w") as f:
             f.write(svg)
         return
 
-    top = _top_items(counter, n=10)
-    n   = len(top)
+    top_all = _top_items(counts_all, n=5)
+    top_recent = _top_items(counts_recent, n=5)
 
-    # ── layout constants ──────────────────────────────────────────────────────
-    W           = 560
-    cx, cy      = 175, 185       # donut centre
-    r_out, r_in = 150, 70
-    leg_x       = 345            # legend left edge
-    leg_y0      = 30
-    row_h       = 26
-    H           = max(390, leg_y0 + n * row_h + 60)
+    # ── SVG & CSS Generation ──────────────────────────────────────────────────
+    svg_id = "language-analysis"
+    title_text = "PROGRAMMING LANGUAGE ANALYSIS & RECENT ACTIVITY"
+    desc_text = f"Donut chart shows overall language usage. Bar chart shows activity in the last {days_back} days."
 
-    desc_text = f"{title}. " + ", ".join(
-        f"{lang}: {size / total * 100:.1f}%" for lang, size in top
-    )
+    # Generate animations dynamically
+    donut_css = []
+    donut_circumference = 2 * math.pi * 75 # r = 75 -> ~471.2389
+    
+    for i, (lang, size) in enumerate(top_all):
+        pct = size / total_all
+        length = pct * donut_circumference
+        offset = donut_circumference - length
+        donut_css.append(f"""
+@keyframes draw-slice-{i} {{
+  from {{ stroke-dashoffset: {donut_circumference:.4f}; }}
+  to {{ stroke-dashoffset: {offset:.4f}; }}
+}}
+.slice-{i} {{
+  stroke: {_lang_color(lang, i)};
+  stroke-dasharray: {donut_circumference:.4f};
+  stroke-dashoffset: {donut_circumference:.4f};
+  animation: draw-slice-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}}""")
+
+    bar_css = []
+    for i, (lang, size) in enumerate(top_recent):
+        bar_css.append(f"""
+@keyframes grow-bar-{i} {{
+  from {{ transform: scaleX(0); }}
+  to {{ transform: scaleX(1); }}
+}}
+.bar-{i} {{
+  fill: {_lang_color(lang, i)};
+  animation: grow-bar-{i} 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}}""")
+
+    css = f"""
+  :root {{
+    --bg: #faf9f6;
+    --fg: #1a1a1a;
+    --fg-muted: #555555;
+    --text-muted: #777777;
+    --border: #222222;
+    --grid: rgba(0, 0, 0, 0.05);
+    --slice-border: #faf9f6;
+  }}
+  @media (prefers-color-scheme: dark) {{
+    :root {{
+      --bg: #0f0f11;
+      --fg: #f0f0f0;
+      --fg-muted: #a0a0a0;
+      --text-muted: #888888;
+      --border: #cccccc;
+      --grid: rgba(255, 255, 255, 0.06);
+      --slice-border: #0f0f11;
+    }}
+  }}
+  
+  svg {{
+    background-color: var(--bg);
+  }}
+  
+  .font-serif {{
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  }}
+  .font-sans {{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }}
+  .font-mono {{
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  }}
+  
+  .main-title {{
+    font-size: 13px;
+    font-weight: bold;
+    fill: var(--fg);
+    letter-spacing: 0.06em;
+  }}
+  
+  .sub-title {{
+    font-size: 11px;
+    font-weight: bold;
+    fill: var(--fg-muted);
+    letter-spacing: 0.05em;
+  }}
+  
+  .label-text {{
+    font-size: 12px;
+    fill: var(--fg);
+  }}
+  
+  .val-text {{
+    font-size: 11px;
+    fill: var(--fg-muted);
+  }}
+  
+  .note-text {{
+    font-size: 9.5px;
+    fill: var(--text-muted);
+  }}
+  
+  .bar {{
+    transform-origin: 520px 0;
+  }}
+  
+  /* Animations */
+  @keyframes fade-in {{
+    from {{ opacity: 0; }}
+    to {{ opacity: 1; }}
+  }}
+  
+  .fade-in {{
+    opacity: 0;
+    animation: fade-in 0.8s ease-out 0.6s forwards;
+  }}
+  
+  {"".join(donut_css)}
+  {"".join(bar_css)}
+"""
 
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
-        f'role="img" aria-labelledby="{title_id} {desc_id}">',
-        f'<title id="{title_id}">{html.escape(title)}</title>',
-        f'<desc id="{desc_id}">{html.escape(desc_text)}</desc>',
-        f'<style>{_SHARED_CSS}</style>',
-        # white/black canvas
-        f'<rect width="{W}" height="{H}" fill="var(--bg)"/>',
-        _make_pattern_defs(top, prefix="dp"),
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="360" viewBox="0 0 800 360" role="img" aria-labelledby="{svg_id}-title {svg_id}-desc">',
+        f'<title id="{svg_id}-title">{html.escape(title_text)}</title>',
+        f'<desc id="{svg_id}-desc">{html.escape(desc_text)}</desc>',
+        f'<style>{css}</style>',
+        f'<rect width="100%" height="100%" fill="var(--bg)"/>',
     ]
 
-    # ── chart title ───────────────────────────────────────────────────────────
-    parts.append(
-        f'<text x="{cx}" y="22" text-anchor="middle" class="chart-title">'
-        f'{html.escape(title)}</text>'
-    )
+    # ── Header ────────────────────────────────────────────────────────────────
+    parts.append(f'<line x1="15" y1="12" x2="785" y2="12" stroke="var(--border)" stroke-width="1.5" />')
+    parts.append(f'<text x="15" y="29" class="font-serif main-title">{html.escape(title_text)}</text>')
+    parts.append(f'<line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />')
 
-    # ── donut slices ──────────────────────────────────────────────────────────
-    angle = -math.pi / 2
-    for i, (lang, size) in enumerate(top):
-        frac  = size / total
-        sweep = frac * 2 * math.pi
-        end   = angle + sweep
-        large = 1 if sweep > math.pi else 0
-
-        ox1 = cx + r_out * math.cos(angle)
-        oy1 = cy + r_out * math.sin(angle)
-        ox2 = cx + r_out * math.cos(end)
-        oy2 = cy + r_out * math.sin(end)
-        ix1 = cx + r_in  * math.cos(end)
-        iy1 = cy + r_in  * math.sin(end)
-        ix2 = cx + r_in  * math.cos(angle)
-        iy2 = cy + r_in  * math.sin(angle)
-
-        d = (
-            f"M {ox1:.2f} {oy1:.2f} "
-            f"A {r_out} {r_out} 0 {large} 1 {ox2:.2f} {oy2:.2f} "
-            f"L {ix1:.2f} {iy1:.2f} "
-            f"A {r_in} {r_in} 0 {large} 0 {ix2:.2f} {iy2:.2f} Z"
-        )
-        pct   = f"{frac * 100:.1f}%"
-        aria  = html.escape(f"{lang}: {pct}")
+    # ── Left Column: Donut Chart ──────────────────────────────────────────────
+    # Title
+    parts.append(f'<text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>')
+    
+    # Donut Slices (r=75, stroke-width=30, cx=150, cy=185)
+    cx, cy = 150, 185
+    accumulated_pct = 0.0
+    for i, (lang, size) in enumerate(top_all):
+        pct = size / total_all
+        angle = -90.0 + (accumulated_pct * 360.0)
+        aria = html.escape(f"{lang}: {pct*100:.1f}%")
         parts.append(
-            f'<path class="slice" d="{d}" fill="url(#dp{i})" '
-            f'stroke="var(--slice-border)" stroke-width="1" '
+            f'<circle class="slice-{i}" cx="{cx}" cy="{cy}" r="75" fill="none" '
+            f'stroke-width="26" stroke-linecap="butt" '
+            f'transform="rotate({angle:.2f} {cx} {cy})" '
             f'role="img" aria-label="{aria}" tabindex="0">'
-            f'<title>{aria}</title></path>'
+            f'<title>{aria}</title>'
+            f'</circle>'
         )
+        accumulated_pct += pct
 
-        # percentage label inside slice (only if wide enough)
-        if frac > 0.08:
-            mid_a = angle + sweep / 2
-            lr    = (r_out + r_in) / 2
-            lx    = cx + lr * math.cos(mid_a)
-            ly    = cy + lr * math.sin(mid_a)
-            parts.append(
-                f'<text x="{lx:.1f}" y="{ly:.1f}" font-size="11" '
-                f'fill="#ffffff" text-anchor="middle" dominant-baseline="middle" '
-                f'aria-hidden="true" font-weight="600">{html.escape(pct)}</text>'
-            )
+    # Slice separator overlay circles to achieve a clean look without overlapping borders
+    # By using standard stroke-dashoffset we don't have gaps, so we overlay slightly smaller/larger circles if needed,
+    # but a simple inner/outer mask or border circle makes it extremely polished.
+    parts.append(f'<circle cx="{cx}" cy="{cy}" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
+    parts.append(f'<circle cx="{cx}" cy="{cy}" r="62" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
 
-        angle = end
-
-    # ── centre label ─────────────────────────────────────────────────────────
+    # Donut Center Label
     parts.append(
-        f'<circle cx="{cx}" cy="{cy}" r="{r_in}" fill="var(--bg)"/>'
-        f'<text x="{cx}" y="{cy - 9}" text-anchor="middle" class="label-bold">'
-        f'Languages</text>'
-        f'<text x="{cx}" y="{cy + 10}" text-anchor="middle" class="label-sub">'
-        f'{n} shown</text>'
+        f'<g class="fade-in">'
+        f'<text x="{cx}" y="{cy - 5}" text-anchor="middle" class="font-serif label-text" style="font-weight: bold;">Languages</text>'
+        f'<text x="{cx}" y="{cy + 12}" text-anchor="middle" class="font-serif val-text" style="font-style: italic;">All-Time</text>'
+        f'</g>'
     )
 
-    # ── legend ────────────────────────────────────────────────────────────────
-    MAX_LEGEND_CHARS = 22          # truncate long names to prevent overflow
-    for i, (lang, size) in enumerate(top):
-        frac  = size / total
-        ly    = leg_y0 + i * row_h
-        pct   = f"{frac * 100:.1f}%"
-        name  = lang if len(lang) <= MAX_LEGEND_CHARS else lang[:MAX_LEGEND_CHARS - 1] + "…"
+    # Donut Legend (x=270, y=100)
+    leg_x = 265
+    leg_y0 = 98
+    for i, (lang, size) in enumerate(top_all):
+        pct = size / total_all
+        ly = leg_y0 + i * 26
+        color = _lang_color(lang, i)
         parts.append(
-            f'<rect x="{leg_x}" y="{ly + 1}" width="12" height="12" rx="2" '
-            f'fill="url(#dp{i})" stroke="{_lang_color(lang, i)}" stroke-width="0.5" '
-            f'aria-hidden="true"/>'
-        )
-        # language name
-        parts.append(
-            f'<text x="{leg_x + 18}" y="{ly + 12}" class="label-main" aria-hidden="true">'
-            f'{html.escape(name)}</text>'
-        )
-        # percentage (right-aligned at W-8)
-        parts.append(
-            f'<text x="{W - 8}" y="{ly + 12}" text-anchor="end" '
-            f'class="label-sub" aria-hidden="true">{html.escape(pct)}</text>'
+            f'<g class="fade-in">'
+            f'<rect x="{leg_x}" y="{ly + 2}" width="10" height="10" rx="1" fill="{color}" stroke="var(--slice-border)" stroke-width="0.5" />'
+            f'<text x="{leg_x + 18}" y="{ly + 11}" class="font-sans label-text">{html.escape(lang)}</text>'
+            f'<text x="385" y="{ly + 11}" text-anchor="end" class="font-mono val-text">{pct*100:.1f}%</text>'
+            f'</g>'
         )
 
-    # ── subtitle ─────────────────────────────────────────────────────────────
-    parts.append(
-        f'<text x="{leg_x}" y="{H - 12}" class="label-sub">'
-        f'Measured by bytes of code</text>'
-    )
+    # ── Vertical Divider ──────────────────────────────────────────────────────
+    parts.append(f'<line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />')
+
+    # ── Right Column: Recent Activity ─────────────────────────────────────────
+    # Title
+    parts.append(f'<text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST {days_back} DAYS)</text>')
+
+    # Grid Lines (0%, 25%, 50%, 75%, 100%)
+    grid_x0 = 520
+    grid_w = 200
+    for p in [0.0, 0.25, 0.50, 0.75, 1.0]:
+        gx = grid_x0 + grid_w * p
+        parts.append(f'<line x1="{gx}" y1="85" x2="{gx}" y2="292" stroke="var(--grid)" stroke-width="0.75" />')
+        # Grid labels (only for 0, 50, 100 to keep it clean)
+        if p in [0.0, 0.5, 1.0]:
+            parts.append(f'<text x="{gx}" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">{int(p*100)}%</text>')
+
+    # Bars
+    bar_y0 = 102
+    row_h = 36
+    bar_h = 12
+    for i, (lang, size) in enumerate(top_recent):
+        pct = size / total_recent
+        by = bar_y0 + i * row_h
+        bw = max(2, pct * grid_w)
+        aria = html.escape(f"{lang}: {pct*100:.1f}%")
+        parts.append(
+            f'<g>'
+            f'<text x="510" y="{by + 10}" text-anchor="end" class="font-sans label-text">{html.escape(lang)}</text>'
+            f'<rect class="bar bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" '
+            f'role="img" aria-label="{aria}" tabindex="0">'
+            f'<title>{aria}</title>'
+            f'</rect>'
+            f'<text x="{grid_x0 + bw + 8}" y="{by + 10}" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
+            f'</g>'
+        )
+
+    # ── Footer ────────────────────────────────────────────────────────────────
+    parts.append(f'<line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />')
+    note_txt = f"* Note: All-time language distribution is measured by bytes of code. Recent activity is based on commits over the last {days_back} days."
+    parts.append(f'<text x="15" y="333" class="font-serif note-text" style="font-style: italic;">{html.escape(note_txt)}</text>')
+    parts.append(f'<text x="785" y="333" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>')
+    parts.append(f'<line x1="15" y1="346" x2="785" y2="346" stroke="var(--border)" stroke-width="1.5" />')
 
     parts.append("</svg>")
+
     with open(outpath, "w") as f:
         f.write("\n".join(parts))
-
-
-# ── Bar chart ──────────────────────────────────────────────────────────────────
-
-def make_bar_chart_svg(counter: dict, outpath: str, days_back: int = 90) -> None:
-    """
-    Unified horizontal bar chart (top 5 languages, last N days).
-
-    Layout  : 560 × dynamic height
-    Bar area: x=160..520 (label 8px left margin, value label right)
-    Pattern : same hatch set as the donut, consistent pattern IDs (bp0…bp4)
-    """
-    total = sum(counter.values())
-    svg_id   = os.path.splitext(os.path.basename(outpath))[0]
-    title_id = f"{svg_id}-title"
-    desc_id  = f"{svg_id}-desc"
-
-    chart_title = f"Top languages · last {days_back} days"
-
-    if total == 0:
-        svg = (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="560" height="80" '
-            f'role="img" aria-labelledby="{title_id} {desc_id}">\n'
-            f'<style>{_SHARED_CSS}</style>\n'
-            f'<rect width="560" height="80" fill="var(--bg)"/>\n'
-            f'<title id="{title_id}">{html.escape(chart_title)}</title>\n'
-            f'<desc id="{desc_id}">No language data found.</desc>\n'
-            f'<text x="280" y="44" text-anchor="middle" class="label-main">No data found.</text>\n'
-            f'</svg>\n'
-        )
-        with open(outpath, "w") as f:
-            f.write(svg)
-        return
-
-    top = _top_items(counter, n=5)
-    n   = len(top)
-
-    # ── layout ────────────────────────────────────────────────────────────────
-    W         = 560
-    label_w   = 152         # reserved for language name (left)
-    bar_x0    = label_w + 8 # bar starts here
-    bar_max_w = W - bar_x0 - 56  # 56px right margin for pct label
-    bar_h     = 22
-    row_h     = 38           # bar_h + gap
-    header_h  = 40
-    footer_h  = 28
-    H         = header_h + n * row_h + footer_h
-
-    desc_text = f"{chart_title}. " + ", ".join(
-        f"{lang}: {size / total * 100:.1f}%" for lang, size in top
-    )
-
-    parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
-        f'role="img" aria-labelledby="{title_id} {desc_id}">',
-        f'<title id="{title_id}">{html.escape(chart_title)}</title>',
-        f'<desc id="{desc_id}">{html.escape(desc_text)}</desc>',
-        f'<style>{_SHARED_CSS}</style>',
-        f'<rect width="{W}" height="{H}" fill="var(--bg)"/>',
-        _make_pattern_defs(top, prefix="bp"),
-    ]
-
-    # ── chart title ───────────────────────────────────────────────────────────
-    parts.append(
-        f'<text x="8" y="24" class="chart-title">'
-        f'{html.escape(chart_title)}</text>'
-    )
-
-    # ── bars ──────────────────────────────────────────────────────────────────
-    MAX_NAME_CHARS = 20
-    for i, (lang, size) in enumerate(top):
-        frac   = size / total
-        bar_w  = max(4, frac * bar_max_w)   # minimum 4px so bar is always visible
-        by     = header_h + i * row_h + (row_h - bar_h) // 2
-        pct    = f"{frac * 100:.1f}%"
-        name   = lang if len(lang) <= MAX_NAME_CHARS else lang[:MAX_NAME_CHARS - 1] + "…"
-        aria   = html.escape(f"{lang}: {pct}")
-
-        # language name label (right-aligned, clipped to label area)
-        parts.append(
-            f'<text x="{label_w}" y="{by + bar_h // 2 + 1}" '
-            f'text-anchor="end" dominant-baseline="middle" '
-            f'class="label-main" aria-hidden="true" clip-path="none">'
-            f'{html.escape(name)}</text>'
-        )
-
-        # track (background)
-        parts.append(
-            f'<rect x="{bar_x0}" y="{by}" width="{bar_max_w}" height="{bar_h}" '
-            f'rx="4" fill="var(--bar-track)" aria-hidden="true"/>'
-        )
-
-        # colored + hatched bar
-        parts.append(
-            f'<rect x="{bar_x0}" y="{by}" width="{bar_w:.1f}" height="{bar_h}" '
-            f'rx="4" fill="url(#bp{i})" stroke="{_lang_color(lang, i)}" '
-            f'stroke-width="0.5" role="img" aria-label="{aria}" tabindex="0">'
-            f'<title>{aria}</title></rect>'
-        )
-
-        # small color swatch (left edge of bar) for quick color ID
-        swatch_w = min(4, bar_w)
-        parts.append(
-            f'<rect x="{bar_x0}" y="{by}" width="{swatch_w:.1f}" height="{bar_h}" '
-            f'rx="4" fill="{_lang_color(lang, i)}" aria-hidden="true"/>'
-        )
-
-        # percentage label right of bar
-        pct_x = bar_x0 + bar_w + 6
-        # guard: if bar is very long, keep pct inside chart width
-        if pct_x + 36 > W:
-            pct_x = W - 44
-        parts.append(
-            f'<text x="{pct_x:.1f}" y="{by + bar_h // 2 + 1}" '
-            f'dominant-baseline="middle" class="label-sub" aria-hidden="true">'
-            f'{html.escape(pct)}</text>'
-        )
-
-    # ── pattern legend ────────────────────────────────────────────────────────
-    # Small inline swatches so readers can match bar to legend entry
-    leg_y = H - footer_h + 10
-    lx    = 8
-    for i, (lang, _) in enumerate(top):
-        name  = lang if len(lang) <= 14 else lang[:13] + "…"
-        parts.append(
-            f'<rect x="{lx}" y="{leg_y}" width="10" height="10" rx="2" '
-            f'fill="url(#bp{i})" stroke="{_lang_color(lang, i)}" stroke-width="0.5" '
-            f'aria-hidden="true"/>'
-        )
-        parts.append(
-            f'<text x="{lx + 14}" y="{leg_y + 9}" class="label-sub" aria-hidden="true">'
-            f'{html.escape(name)}</text>'
-        )
-        # estimate text width: ~6.5px per char + 14px swatch + 10px gap
-        lx += 14 + len(name) * 6.5 + 12
-        if lx > W - 60:   # wrap guard — skip remaining items
-            break
-
-    parts.append("</svg>")
-    with open(outpath, "w") as f:
-        f.write("\n".join(parts))
-
 
 # ── GitHub API ─────────────────────────────────────────────────────────────────
 
@@ -504,9 +340,8 @@ def _gh_headers() -> dict:
         "X-GitHub-Api-Version": "2022-11-28",
     }
 
-
 def _list_repos() -> list[dict]:
-    req     = _requests
+    req = _requests
     headers = _gh_headers()
     repos, page = [], 1
     while True:
@@ -525,7 +360,6 @@ def _list_repos() -> list[dict]:
         page += 1
     return repos
 
-
 def _aggregate_languages(repos: list[dict]) -> dict:
     headers = _gh_headers()
     totals: dict = defaultdict(int)
@@ -542,7 +376,6 @@ def _aggregate_languages(repos: list[dict]) -> dict:
                 totals[lang] += cnt
     return dict(totals)
 
-
 def fetch_all_repo_languages() -> dict:
     r = _requests.get("https://api.github.com/user", headers=_gh_headers(), timeout=30)
     r.raise_for_status()
@@ -551,9 +384,8 @@ def fetch_all_repo_languages() -> dict:
     print(f"Found {len(repos)} accessible repositories")
     return _aggregate_languages(repos)
 
-
 def fetch_recent_repo_languages(days_back: int = 90) -> dict:
-    repos  = _list_repos()
+    repos = _list_repos()
     cutoff = datetime.utcnow() - timedelta(days=days_back)
     recent = []
     for repo in repos:
@@ -566,7 +398,6 @@ def fetch_recent_repo_languages(days_back: int = 90) -> dict:
             continue
     print(f"Filtered to {len(recent)} repos active in last {days_back} days")
     return _aggregate_languages(recent)
-
 
 # ── Local fallback ─────────────────────────────────────────────────────────────
 
@@ -606,7 +437,6 @@ EXT_LANG: dict[str, str] = {
 
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", ".github"}
 
-
 def scan_bytes(root: str) -> dict:
     counts: dict = defaultdict(int)
     for dirpath, dirnames, filenames in os.walk(root):
@@ -617,11 +447,10 @@ def scan_bytes(root: str) -> dict:
                 size = os.path.getsize(full)
             except OSError:
                 continue
-            ext  = os.path.splitext(fn)[1].lower()
+            ext = os.path.splitext(fn)[1].lower()
             lang = EXT_LANG.get(ext, "Other")
             counts[lang] += size
     return dict(counts)
-
 
 # ── entry point ────────────────────────────────────────────────────────────────
 
@@ -630,15 +459,13 @@ DAYS_BACK = 90
 if __name__ == "__main__":
     if GH_TOKEN and _requests is not None:
         print("Fetching language stats from GitHub API …")
-        counts_all    = fetch_all_repo_languages()
+        counts_all = fetch_all_repo_languages()
         counts_recent = fetch_recent_repo_languages(days_back=DAYS_BACK)
     else:
         print("GH_TOKEN not set or `requests` unavailable — scanning local repo …")
-        counts_all    = scan_bytes(REPO_ROOT)
+        counts_all = scan_bytes(REPO_ROOT)
+        # For local scanning fallback, mock recent as having slightly different ratios or identical
         counts_recent = counts_all
 
-    make_donut_svg(counts_all, "Language distribution", OUTPUT_DONUT)
-    print("Wrote", OUTPUT_DONUT)
-
-    make_bar_chart_svg(counts_recent, OUTPUT_BAR, days_back=DAYS_BACK)
-    print("Wrote", OUTPUT_BAR)
+    make_unified_svg(counts_all, counts_recent, OUTPUT_SVG, days_back=DAYS_BACK)
+    print("Wrote", OUTPUT_SVG)
