@@ -1,7 +1,7 @@
 """
 Generate a unified language distribution SVG chart from GitHub repositories.
-Concept: Academic Editorial (minimalist, booktabs-style lines, refined typography, smooth animations)
-Customization: Transparent background to blend seamlessly with host themes.
+Concept: Academic Editorial with Color-Universal Design (Pattern fills for accessibility)
+Customization: Transparent background & distinct patterns for colorblind-friendly identification.
 
 Output: languages.svg (800 × 360 px)
 - Left: Overall language distribution (donut chart + legend)
@@ -9,7 +9,7 @@ Output: languages.svg (800 × 360 px)
 
 Design system:
 - Font: Georgia/Serif for headers/notes, system-ui/monospace for data.
-- Refined unified color palette with transparent background.
+- Accessible patterns used alongside the refined color palette.
 
 Note / 表記:
 This script was created or updated with the assistance of an AI model.
@@ -54,7 +54,7 @@ LANG_COLORS: dict[str, str] = {
     "HTML":             "#b83e23",  # Terracotta Red
     "CSS":              "#216a94",  # Ocean Blue
     "Markdown":         "#1e3b70",  # Deep Indigo
-    "TeX":              "#3FAE49",  
+    "TeX":              "#3FAE49",
     "ReStructuredText": "#5a7c8c",  # Blue Grey
     "Ruby":             "#cc342d",
     "PHP":              "#777bb3",
@@ -137,9 +137,48 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
     top_all = _top_items(counts_all, n=5)
     top_recent = _top_items(counts_recent, n=5)
 
+    # 識別模様マッピング (1位〜5位に固有パターンを付与、Otherはプレーンにしてメリハリを定義)
+    # パターンの色はライト/ダーク双方のコントラストに対応可能な半透明の白/黒ベース
+    patterns_def = """
+    <defs>
+      <!-- Pattern 0: Stripe (斜線) -->
+      <pattern id="pat-0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="3" />
+        <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(0,0,0,0.15)" stroke-width="1" />
+      </pattern>
+      <!-- Pattern 1: Dots (水玉) -->
+      <pattern id="pat-1" width="8" height="8" patternUnits="userSpaceOnUse">
+        <circle cx="4" cy="4" r="2" fill="rgba(255,255,255,0.5)" />
+        <circle cx="4" cy="4" r="1" fill="rgba(0,0,0,0.2)" />
+      </pattern>
+      <!-- Pattern 2: Grid (格子) -->
+      <pattern id="pat-2" width="10" height="10" patternUnits="userSpaceOnUse">
+        <rect width="10" height="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <rect width="10" height="10" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 3: Wave (波線) -->
+      <pattern id="pat-3" width="12" height="6" patternUnits="userSpaceOnUse">
+        <path d="M 0 3 Q 3 0, 6 3 T 12 3" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" />
+        <path d="M 0 3 Q 3 0, 6 3 T 12 3" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 4: Vertical Lines (縦縞) -->
+      <pattern id="pat-4" width="6" height="6" patternUnits="userSpaceOnUse">
+        <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+        <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+    </defs>
+    """
+
+    # 各言語に付与するパターンIDを特定するための関数
+    def _get_pattern_id(lang_name: str, top_list: list[tuple[str, int]]) -> str | None:
+        for idx, (l, _) in enumerate(top_list):
+            if l == lang_name and idx < 5 and l != "Other":
+                return f"pat-{idx}"
+        return None
+
     svg_id = "language-analysis"
     title_text = "PROGRAMMING LANGUAGE ANALYSIS & RECENT ACTIVITY"
-    desc_text = f"Donut chart shows overall language usage. Bar chart shows activity in the last {days_back} days."
+    desc_text = f"Donut chart shows overall language usage with patterns. Bar chart shows activity in the last {days_back} days."
 
     grid_x0 = 570
     grid_w = 190
@@ -168,6 +207,22 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
   stroke-dashoffset: {donut_circumference:.4f};
   animation: draw-slice-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
 }}
+
+/* パターンオーバーレイ用のアニメーション */
+@keyframes draw-pattern-{i} {{
+  from {{
+      stroke-dashoffset: {donut_circumference:.4f};
+  }}
+  to {{
+      stroke-dashoffset: {offset:.4f};
+  }}
+}}
+
+.slice-pattern-{i} {{
+  stroke-dasharray: {donut_circumference:.4f};
+  stroke-dashoffset: {donut_circumference:.4f};
+  animation: draw-pattern-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
+}}
 """)
 
     bar_css = []
@@ -185,6 +240,11 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
 
 .bar-{i} {{
   fill: {color};
+  transform-origin: {grid_x0}px 0;
+  animation: grow-bar-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
+}}
+
+.bar-pattern-{i} {{
   transform-origin: {grid_x0}px 0;
   animation: grow-bar-{i} 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
 }}
@@ -272,6 +332,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         f'<title id="{svg_id}-title">{html.escape(title_text)}</title>',
         f'<desc id="{svg_id}-desc">{html.escape(desc_text)}</desc>',
         f'<style>{css}</style>',
+        patterns_def,
     ]
 
     # ── Header ────────────────────────────────────────────────────────────────
@@ -289,14 +350,25 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         angle = -90.0 + (accumulated_pct * 360.0)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
         color = _lang_color(lang)
+        pat_id = _get_pattern_id(lang, top_all)
+        
+        # 下地のソリッドカラーをレンダリング
         parts.append(
             f'<circle class="slice-{i}" cx="{cx}" cy="{cy}" r="75" fill="none" '
             f'stroke="{color}" stroke-width="26" stroke-linecap="butt" '
-            f'transform="rotate({angle:.2f} {cx} {cy})" '
-            f'role="img" aria-label="{aria}" tabindex="0">'
-            f'<title>{aria}</title>'
+            f'transform="rotate({angle:.2f} {cx} {cy})">'
             f'</circle>'
         )
+        # 模様（パターン）を上からレイヤーとして重ねる
+        if pat_id:
+            parts.append(
+                f'<circle class="slice-pattern-{i}" cx="{cx}" cy="{cy}" r="75" fill="none" '
+                f'stroke="url(#{pat_id})" stroke-width="26" stroke-linecap="butt" '
+                f'transform="rotate({angle:.2f} {cx} {cy})" '
+                f'role="img" aria-label="{aria}" tabindex="0">'
+                f'<title>{aria}</title>'
+                f'</circle>'
+            )
         accumulated_pct += pct
 
     parts.append(f'<circle cx="{cx}" cy="{cy}" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>')
@@ -317,12 +389,17 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         line1, line2 = split_language_name(lang)  
         ly = leg_y
         color = _lang_color(lang)
+        pat_id = _get_pattern_id(lang, top_all)
+        
         parts.append(
             f'<g class="fade-in">'
-            f'<rect x="{leg_x}" y="{ly+2}" width="10" height="10" '
-            f'rx="1" fill="{color}" '
-            f'stroke="var(--slice-border)" stroke-width="0.5"/>'
+            f'<rect x="{leg_x}" y="{ly+2}" width="10" height="10" rx="1" fill="{color}" />'
         )
+        if pat_id:
+            parts.append(
+                f'<rect x="{leg_x}" y="{ly+2}" width="10" height="10" rx="1" fill="url(#{pat_id})" '
+                f'stroke="var(--text-muted)" stroke-width="0.25"/>'
+            )
 
         parts.append(
             f'<text x="{leg_x+18}" y="{ly+10}" '
@@ -369,16 +446,22 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         bw = max(2, pct * grid_w)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
         color = _lang_color(lang)
+        pat_id = _get_pattern_id(lang, top_recent)
+        
         parts.append(
             f'<g>'
             f'<text x="420" y="{by + 10}" text-anchor="start" class="font-sans label-text">{html.escape(lang)}</text>'
             f'<text x="555" y="{by + 10}" text-anchor="end" class="font-mono val-text fade-in">{pct*100:.1f}%</text>'
-            f'<rect class="bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" fill="{color}" '
-            f'role="img" aria-label="{aria}" tabindex="0">'
-            f'<title>{aria}</title>'
-            f'</rect>'
-            f'</g>'
+            f'<rect class="bar-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" fill="{color}" />'
         )
+        if pat_id:
+            parts.append(
+                f'<rect class="bar-pattern-{i}" x="{grid_x0}" y="{by}" width="{bw:.2f}" height="{bar_h}" rx="1" fill="url(#{pat_id})" '
+                f'role="img" aria-label="{aria}" tabindex="0">'
+                f'<title>{aria}</title>'
+                f'</rect>'
+            )
+        parts.append(f'</g>')
 
     # ── Footer ────────────────────────────────────────────────────────────────
     parts.append(f'<line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />')
@@ -501,7 +584,7 @@ EXT_LANG: dict[str, str] = {
     ".md": "Markdown", ".xml": "XML", ".json": "JSON",
     ".yml": "YAML", ".yaml": "YAML", ".toml": "TOML",
     ".ini": "INI", ".txt": "Text", ".svg": "SVG",
-    ".tex": "TeX", ".sty": "TeX", ".cls": "TeX", ".bib": "BibTeX",
+    ".tex": "LaTeX", ".sty": "LaTeX", ".cls": "LaTeX", ".bib": "BibTeX",
 }
 
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", ".github"}
