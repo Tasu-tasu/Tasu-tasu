@@ -54,7 +54,7 @@ LANG_COLORS: dict[str, str] = {
     "HTML":             "#b83e23",  # Terracotta Red
     "CSS":              "#216a94",  # Ocean Blue
     "Markdown":         "#1e3b70",  # Deep Indigo
-    "LaTeX":            "#5b4a8a",  # Academic Purple
+    "TeX":            "#5b4a8a",  # Academic Purple
     "ReStructuredText": "#5a7c8c",  # Blue Grey
     "Ruby":             "#cc342d",
     "PHP":              "#777bb3",
@@ -501,7 +501,7 @@ EXT_LANG: dict[str, str] = {
     ".md": "Markdown", ".xml": "XML", ".json": "JSON",
     ".yml": "YAML", ".yaml": "YAML", ".toml": "TOML",
     ".ini": "INI", ".txt": "Text", ".svg": "SVG",
-    ".tex": "LaTeX", ".sty": "LaTeX", ".cls": "LaTeX", ".bib": "BibTeX",
+    ".tex": "TeX", ".sty": "TeX", ".cls": "TeX", ".bib": "BibTeX",
 }
 
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", ".github"}
