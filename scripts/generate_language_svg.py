@@ -54,7 +54,7 @@ LANG_COLORS: dict[str, str] = {
     "HTML":             "#b83e23",  # Terracotta Red
     "CSS":              "#216a94",  # Ocean Blue
     "Markdown":         "#1e3b70",  # Deep Indigo
-    "TeX":            "#5b4a8a",  # Academic Purple
+    "TeX":              "#3FAE49",  
     "ReStructuredText": "#5a7c8c",  # Blue Grey
     "Ruby":             "#cc342d",
     "PHP":              "#777bb3",
