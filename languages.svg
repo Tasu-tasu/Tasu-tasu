@@ -80,7 +80,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 293.6111;
+      stroke-dashoffset: 293.6107;
   }
 }
 
@@ -96,12 +96,12 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 310.5504;
+      stroke-dashoffset: 310.5500;
   }
 }
 
 .slice-1 {
-  stroke: #bd3b24;
+  stroke: #5b4a8a;
   stroke-dasharray: 471.2389;
   stroke-dashoffset: 471.2389;
   animation: draw-slice-1 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
@@ -112,7 +112,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 411.5317;
+      stroke-dashoffset: 411.5316;
   }
 }
 
@@ -128,7 +128,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 433.2457;
+      stroke-dashoffset: 433.2467;
   }
 }
 
@@ -182,7 +182,7 @@
 }
 
 .bar-0 {
-  fill: #bd3b24;
+  fill: #5b4a8a;
   transform-origin: 570px 0;
   animation: grow-bar-0 1.2s cubic-bezier(0.25,1,0.5,1) forwards;
 }
@@ -268,8 +268,8 @@
 <line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />
 <text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>
 <circle class="slice-0" cx="145" cy="185" r="75" fill="none" stroke="#b85a1c" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 145 185)" role="img" aria-label="Jupyter Notebook: 37.7%" tabindex="0"><title>Jupyter Notebook: 37.7%</title></circle>
-<circle class="slice-1" cx="145" cy="185" r="75" fill="none" stroke="#bd3b24" stroke-width="26" stroke-linecap="butt" transform="rotate(45.70 145 185)" role="img" aria-label="TeX: 34.1%" tabindex="0"><title>TeX: 34.1%</title></circle>
-<circle class="slice-2" cx="145" cy="185" r="75" fill="none" stroke="#2a4e7c" stroke-width="26" stroke-linecap="butt" transform="rotate(168.45 145 185)" role="img" aria-label="C++: 12.7%" tabindex="0"><title>C++: 12.7%</title></circle>
+<circle class="slice-1" cx="145" cy="185" r="75" fill="none" stroke="#5b4a8a" stroke-width="26" stroke-linecap="butt" transform="rotate(45.70 145 185)" role="img" aria-label="TeX: 34.1%" tabindex="0"><title>TeX: 34.1%</title></circle>
+<circle class="slice-2" cx="145" cy="185" r="75" fill="none" stroke="#2a4e7c" stroke-width="26" stroke-linecap="butt" transform="rotate(168.46 145 185)" role="img" aria-label="C++: 12.7%" tabindex="0"><title>C++: 12.7%</title></circle>
 <circle class="slice-3" cx="145" cy="185" r="75" fill="none" stroke="#3f6a8a" stroke-width="26" stroke-linecap="butt" transform="rotate(214.07 145 185)" role="img" aria-label="Python: 8.1%" tabindex="0"><title>Python: 8.1%</title></circle>
 <circle class="slice-4" cx="145" cy="185" r="75" fill="none" stroke="#bd532b" stroke-width="26" stroke-linecap="butt" transform="rotate(243.09 145 185)" role="img" aria-label="MATLAB: 2.0%" tabindex="0"><title>MATLAB: 2.0%</title></circle>
 <circle class="slice-5" cx="145" cy="185" r="75" fill="none" stroke="#718096" stroke-width="26" stroke-linecap="butt" transform="rotate(250.40 145 185)" role="img" aria-label="Other: 5.4%" tabindex="0"><title>Other: 5.4%</title></circle>
@@ -281,7 +281,7 @@
 <text x="263" y="121" class="font-sans label-text">Notebook</text>
 <text x="390" y="114" text-anchor="end" class="font-mono val-text">37.7%</text>
 </g>
-<g class="fade-in"><rect x="245" y="138" width="10" height="10" rx="1" fill="#bd3b24" stroke="var(--slice-border)" stroke-width="0.5"/>
+<g class="fade-in"><rect x="245" y="138" width="10" height="10" rx="1" fill="#5b4a8a" stroke="var(--slice-border)" stroke-width="0.5"/>
 <text x="263" y="146" class="font-sans label-text">TeX</text>
 <text x="390" y="146" text-anchor="end" class="font-mono val-text">34.1%</text>
 </g>
@@ -311,7 +311,7 @@
 <line x1="712.5" y1="85" x2="712.5" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <line x1="760.0" y1="85" x2="760.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <text x="760.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">100%</text>
-<g><text x="420" y="112" text-anchor="start" class="font-sans label-text">TeX</text><text x="555" y="112" text-anchor="end" class="font-mono val-text fade-in">61.8%</text><rect class="bar-0" x="570" y="102" width="117.40" height="12" rx="1" fill="#bd3b24" role="img" aria-label="TeX: 61.8%" tabindex="0"><title>TeX: 61.8%</title></rect></g>
+<g><text x="420" y="112" text-anchor="start" class="font-sans label-text">TeX</text><text x="555" y="112" text-anchor="end" class="font-mono val-text fade-in">61.8%</text><rect class="bar-0" x="570" y="102" width="117.40" height="12" rx="1" fill="#5b4a8a" role="img" aria-label="TeX: 61.8%" tabindex="0"><title>TeX: 61.8%</title></rect></g>
 <g><text x="420" y="148" text-anchor="start" class="font-sans label-text">Python</text><text x="555" y="148" text-anchor="end" class="font-mono val-text fade-in">17.7%</text><rect class="bar-1" x="570" y="138" width="33.68" height="12" rx="1" fill="#3f6a8a" role="img" aria-label="Python: 17.7%" tabindex="0"><title>Python: 17.7%</title></rect></g>
 <g><text x="420" y="184" text-anchor="start" class="font-sans label-text">MATLAB</text><text x="555" y="184" text-anchor="end" class="font-mono val-text fade-in">6.4%</text><rect class="bar-2" x="570" y="174" width="12.14" height="12" rx="1" fill="#bd532b" role="img" aria-label="MATLAB: 6.4%" tabindex="0"><title>MATLAB: 6.4%</title></rect></g>
 <g><text x="420" y="220" text-anchor="start" class="font-sans label-text">Jupyter Notebook</text><text x="555" y="220" text-anchor="end" class="font-mono val-text fade-in">3.8%</text><rect class="bar-3" x="570" y="210" width="7.31" height="12" rx="1" fill="#b85a1c" role="img" aria-label="Jupyter Notebook: 3.8%" tabindex="0"><title>Jupyter Notebook: 3.8%</title></rect></g>
