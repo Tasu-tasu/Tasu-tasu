@@ -54,7 +54,7 @@ LANG_COLORS: dict[str, str] = {
     "HTML":             "#b83e23",  # Terracotta Red
     "CSS":              "#216a94",  # Ocean Blue
     "Markdown":         "#1e3b70",  # Deep Indigo
-    "TeX":              "#3FAE49",
+    "TeX":              "#43A047",
     "ReStructuredText": "#5a7c8c",  # Blue Grey
     "Ruby":             "#cc342d",
     "PHP":              "#777bb3",
@@ -177,7 +177,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         return None
 
     svg_id = "language-analysis"
-    title_text = "PROGRAMMING LANGUAGE ANALYSIS & RECENT ACTIVITY"
+    title_text = "LANGUAGE DISTRIBUTION & RECENT ACTIVITY"
     desc_text = f"Donut chart shows overall language usage with patterns. Bar chart shows activity in the last {days_back} days."
 
     grid_x0 = 570
@@ -606,7 +606,7 @@ def scan_bytes(root: str) -> dict:
 
 # ── entry point ────────────────────────────────────────────────────────────────
 
-DAYS_BACK = 90
+DAYS_BACK = 60
 
 if __name__ == "__main__":
     if GH_TOKEN and _requests is not None:
