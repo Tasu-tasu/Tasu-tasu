@@ -166,15 +166,61 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
         <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
       </pattern>
+      <!-- Pattern 5: Cross-hatch (格子斜線) -->
+      <pattern id="pat-5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="8" y2="0" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <line x1="0" y1="0" x2="8" y2="0" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+        <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 6: Checker (市松) -->
+      <pattern id="pat-6" width="8" height="8" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="4" height="4" fill="rgba(255,255,255,0.45)" />
+        <rect x="4" y="4" width="4" height="4" fill="rgba(255,255,255,0.45)" />
+        <rect x="0" y="0" width="8" height="8" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 7: Diagonal Dashes (破線斜め) -->
+      <pattern id="pat-7" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(255,255,255,0.45)" stroke-width="3" stroke-dasharray="3,2" />
+        <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(0,0,0,0.15)" stroke-width="1" stroke-dasharray="3,2" />
+      </pattern>
+      <!-- Pattern 8: Horizontal Lines (横縞) -->
+      <pattern id="pat-8" width="6" height="6" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="3" x2="6" y2="3" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+        <line x1="0" y1="3" x2="6" y2="3" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 9: Diamond Grid (菱形格子) -->
+      <pattern id="pat-9" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="10" height="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+        <line x1="5" y1="0" x2="5" y2="10" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
     </defs>
     """
 
-    # 各言語に付与するパターンIDを特定するための関数
-    def _get_pattern_id(lang_name: str, top_list: list[tuple[str, int]]) -> str | None:
-        for idx, (l, _) in enumerate(top_list):
-            if l == lang_name and idx < 5 and l != "Other":
-                return f"pat-{idx}"
-        return None
+    # 円グラフ(top_all)を基準にパターンIDを割り当て、円グラフに無い言語のみ
+    # 棒グラフ(top_recent)側で新しいパターンIDを追加で割り当てる
+    def _build_pattern_assignment(
+        primary_list: list[tuple[str, int]],
+        secondary_list: list[tuple[str, int]],
+        max_patterns: int = 10,
+    ) -> dict[str, str]:
+        assignment: dict[str, str] = {}
+        next_idx = 0
+        for lang, _ in primary_list:
+            if lang == "Other":
+                continue
+            if lang not in assignment and next_idx < max_patterns:
+                assignment[lang] = f"pat-{next_idx}"
+                next_idx += 1
+        for lang, _ in secondary_list:
+            if lang == "Other":
+                continue
+            if lang not in assignment and next_idx < max_patterns:
+                assignment[lang] = f"pat-{next_idx}"
+                next_idx += 1
+        return assignment
+
+    pattern_assignment = _build_pattern_assignment(top_all, top_recent)
 
     svg_id = "language-analysis"
     title_text = "LANGUAGE DISTRIBUTION & RECENT ACTIVITY"
@@ -350,7 +396,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         angle = -90.0 + (accumulated_pct * 360.0)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
         color = _lang_color(lang)
-        pat_id = _get_pattern_id(lang, top_all)
+        pat_id = pattern_assignment.get(lang)
         
         # 下地のソリッドカラーをレンダリング
         parts.append(
@@ -389,7 +435,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         line1, line2 = split_language_name(lang)  
         ly = leg_y
         color = _lang_color(lang)
-        pat_id = _get_pattern_id(lang, top_all)
+        pat_id = pattern_assignment.get(lang)
         
         parts.append(
             f'<g class="fade-in">'
@@ -446,7 +492,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
         bw = max(2, pct * grid_w)
         aria = html.escape(f"{lang}: {pct*100:.1f}%")
         color = _lang_color(lang)
-        pat_id = _get_pattern_id(lang, top_recent)
+        pat_id = pattern_assignment.get(lang)
         
         parts.append(
             f'<g>'
@@ -465,7 +511,7 @@ def make_unified_svg(counts_all: dict, counts_recent: dict, outpath: str, days_b
 
     # ── Footer ────────────────────────────────────────────────────────────────
     parts.append(f'<line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />')
-    note_txt = f"* Note: All-time language distribution is measured by bytes of code. Recent activity is based on commits over the last {days_back} days."
+    note_txt = f"* Note: All-time language distribution is measured by bytes of code. Recent activity reflects repositories pushed to within the last {days_back} days."
     parts.append(f'<text x="15" y="333" class="font-serif note-text" style="font-style: italic;">{html.escape(note_txt)}</text>')
     parts.append(f'<text x="785" y="333" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>')
     parts.append(f'<line x1="15" y1="346" x2="785" y2="346" stroke="var(--border)" stroke-width="1.5" />')
