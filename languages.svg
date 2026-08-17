@@ -80,7 +80,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 296.3259;
+      stroke-dashoffset: 296.8320;
   }
 }
 
@@ -97,7 +97,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 296.3259;
+      stroke-dashoffset: 296.8320;
   }
 }
 
@@ -112,7 +112,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 306.4536;
+      stroke-dashoffset: 305.9450;
   }
 }
 
@@ -129,7 +129,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 306.4536;
+      stroke-dashoffset: 305.9450;
   }
 }
 
@@ -144,7 +144,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 412.4442;
+      stroke-dashoffset: 412.6143;
   }
 }
 
@@ -161,7 +161,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 412.4442;
+      stroke-dashoffset: 412.6143;
   }
 }
 
@@ -176,7 +176,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 433.3019;
+      stroke-dashoffset: 433.0336;
   }
 }
 
@@ -193,7 +193,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 433.3019;
+      stroke-dashoffset: 433.0336;
   }
 }
 
@@ -208,7 +208,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 461.6892;
+      stroke-dashoffset: 461.7168;
   }
 }
 
@@ -225,7 +225,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 461.6892;
+      stroke-dashoffset: 461.7168;
   }
 }
 
@@ -240,7 +240,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 445.9797;
+      stroke-dashoffset: 446.0528;
   }
 }
 
@@ -257,7 +257,7 @@
       stroke-dashoffset: 471.2389;
   }
   to {
-      stroke-dashoffset: 445.9797;
+      stroke-dashoffset: 446.0528;
   }
 }
 
@@ -376,6 +376,34 @@
         <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
         <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
       </pattern>
+      <!-- Pattern 5: Cross-hatch (格子斜線) -->
+      <pattern id="pat-5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="8" y2="0" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <line x1="0" y1="0" x2="8" y2="0" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+        <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 6: Checker (市松) -->
+      <pattern id="pat-6" width="8" height="8" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="4" height="4" fill="rgba(255,255,255,0.45)" />
+        <rect x="4" y="4" width="4" height="4" fill="rgba(255,255,255,0.45)" />
+        <rect x="0" y="0" width="8" height="8" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 7: Diagonal Dashes (破線斜め) -->
+      <pattern id="pat-7" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(255,255,255,0.45)" stroke-width="3" stroke-dasharray="3,2" />
+        <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(0,0,0,0.15)" stroke-width="1" stroke-dasharray="3,2" />
+      </pattern>
+      <!-- Pattern 8: Horizontal Lines (横縞) -->
+      <pattern id="pat-8" width="6" height="6" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="3" x2="6" y2="3" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+        <line x1="0" y1="3" x2="6" y2="3" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
+      <!-- Pattern 9: Diamond Grid (菱形格子) -->
+      <pattern id="pat-9" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="10" height="10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+        <line x1="5" y1="0" x2="5" y2="10" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+      </pattern>
     </defs>
     
 <line x1="15" y1="12" x2="785" y2="12" stroke="var(--border)" stroke-width="1.5" />
@@ -383,16 +411,16 @@
 <line x1="15" y1="40" x2="785" y2="40" stroke="var(--border)" stroke-width="0.75" />
 <text x="40" y="68" class="font-serif sub-title">I. OVERALL LANGUAGE USAGE</text>
 <circle class="slice-0" cx="145" cy="185" r="75" fill="none" stroke="#b85a1c" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 145 185)"></circle>
-<circle class="slice-pattern-0" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-0)" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 145 185)" role="img" aria-label="Jupyter Notebook: 37.1%" tabindex="0"><title>Jupyter Notebook: 37.1%</title></circle>
-<circle class="slice-1" cx="145" cy="185" r="75" fill="none" stroke="#43A047" stroke-width="26" stroke-linecap="butt" transform="rotate(43.62 145 185)"></circle>
-<circle class="slice-pattern-1" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-1)" stroke-width="26" stroke-linecap="butt" transform="rotate(43.62 145 185)" role="img" aria-label="TeX: 35.0%" tabindex="0"><title>TeX: 35.0%</title></circle>
+<circle class="slice-pattern-0" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-0)" stroke-width="26" stroke-linecap="butt" transform="rotate(-90.00 145 185)" role="img" aria-label="Jupyter Notebook: 37.0%" tabindex="0"><title>Jupyter Notebook: 37.0%</title></circle>
+<circle class="slice-1" cx="145" cy="185" r="75" fill="none" stroke="#43A047" stroke-width="26" stroke-linecap="butt" transform="rotate(43.24 145 185)"></circle>
+<circle class="slice-pattern-1" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-1)" stroke-width="26" stroke-linecap="butt" transform="rotate(43.24 145 185)" role="img" aria-label="TeX: 35.1%" tabindex="0"><title>TeX: 35.1%</title></circle>
 <circle class="slice-2" cx="145" cy="185" r="75" fill="none" stroke="#2a4e7c" stroke-width="26" stroke-linecap="butt" transform="rotate(169.51 145 185)"></circle>
-<circle class="slice-pattern-2" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-2)" stroke-width="26" stroke-linecap="butt" transform="rotate(169.51 145 185)" role="img" aria-label="C++: 12.5%" tabindex="0"><title>C++: 12.5%</title></circle>
-<circle class="slice-3" cx="145" cy="185" r="75" fill="none" stroke="#3f6a8a" stroke-width="26" stroke-linecap="butt" transform="rotate(214.43 145 185)"></circle>
-<circle class="slice-pattern-3" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-3)" stroke-width="26" stroke-linecap="butt" transform="rotate(214.43 145 185)" role="img" aria-label="Python: 8.1%" tabindex="0"><title>Python: 8.1%</title></circle>
-<circle class="slice-4" cx="145" cy="185" r="75" fill="none" stroke="#bd532b" stroke-width="26" stroke-linecap="butt" transform="rotate(243.41 145 185)"></circle>
-<circle class="slice-pattern-4" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-4)" stroke-width="26" stroke-linecap="butt" transform="rotate(243.41 145 185)" role="img" aria-label="MATLAB: 2.0%" tabindex="0"><title>MATLAB: 2.0%</title></circle>
-<circle class="slice-5" cx="145" cy="185" r="75" fill="none" stroke="#718096" stroke-width="26" stroke-linecap="butt" transform="rotate(250.70 145 185)"></circle>
+<circle class="slice-pattern-2" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-2)" stroke-width="26" stroke-linecap="butt" transform="rotate(169.51 145 185)" role="img" aria-label="C++: 12.4%" tabindex="0"><title>C++: 12.4%</title></circle>
+<circle class="slice-3" cx="145" cy="185" r="75" fill="none" stroke="#3f6a8a" stroke-width="26" stroke-linecap="butt" transform="rotate(214.30 145 185)"></circle>
+<circle class="slice-pattern-3" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-3)" stroke-width="26" stroke-linecap="butt" transform="rotate(214.30 145 185)" role="img" aria-label="Python: 8.1%" tabindex="0"><title>Python: 8.1%</title></circle>
+<circle class="slice-4" cx="145" cy="185" r="75" fill="none" stroke="#bd532b" stroke-width="26" stroke-linecap="butt" transform="rotate(243.48 145 185)"></circle>
+<circle class="slice-pattern-4" cx="145" cy="185" r="75" fill="none" stroke="url(#pat-4)" stroke-width="26" stroke-linecap="butt" transform="rotate(243.48 145 185)" role="img" aria-label="MATLAB: 2.0%" tabindex="0"><title>MATLAB: 2.0%</title></circle>
+<circle class="slice-5" cx="145" cy="185" r="75" fill="none" stroke="#718096" stroke-width="26" stroke-linecap="butt" transform="rotate(250.76 145 185)"></circle>
 <circle cx="145" cy="185" r="88" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>
 <circle cx="145" cy="185" r="62" fill="none" stroke="var(--slice-border)" stroke-width="1.5"/>
 <g class="fade-in"><text x="145" y="180" text-anchor="middle" class="font-serif label-text" style="font-weight: bold;">Languages</text><text x="145" y="197" text-anchor="middle" class="font-serif val-text" style="font-style: italic;">All-Time</text></g>
@@ -400,17 +428,17 @@
 <rect x="245" y="100" width="10" height="10" rx="1" fill="url(#pat-0)" stroke="var(--text-muted)" stroke-width="0.25"/>
 <text x="263" y="108" class="font-sans label-text">Jupyter</text>
 <text x="263" y="121" class="font-sans label-text">Notebook</text>
-<text x="390" y="114" text-anchor="end" class="font-mono val-text">37.1%</text>
+<text x="390" y="114" text-anchor="end" class="font-mono val-text">37.0%</text>
 </g>
 <g class="fade-in"><rect x="245" y="138" width="10" height="10" rx="1" fill="#43A047" />
 <rect x="245" y="138" width="10" height="10" rx="1" fill="url(#pat-1)" stroke="var(--text-muted)" stroke-width="0.25"/>
 <text x="263" y="146" class="font-sans label-text">TeX</text>
-<text x="390" y="146" text-anchor="end" class="font-mono val-text">35.0%</text>
+<text x="390" y="146" text-anchor="end" class="font-mono val-text">35.1%</text>
 </g>
 <g class="fade-in"><rect x="245" y="164" width="10" height="10" rx="1" fill="#2a4e7c" />
 <rect x="245" y="164" width="10" height="10" rx="1" fill="url(#pat-2)" stroke="var(--text-muted)" stroke-width="0.25"/>
 <text x="263" y="172" class="font-sans label-text">C++</text>
-<text x="390" y="172" text-anchor="end" class="font-mono val-text">12.5%</text>
+<text x="390" y="172" text-anchor="end" class="font-mono val-text">12.4%</text>
 </g>
 <g class="fade-in"><rect x="245" y="190" width="10" height="10" rx="1" fill="#3f6a8a" />
 <rect x="245" y="190" width="10" height="10" rx="1" fill="url(#pat-3)" stroke="var(--text-muted)" stroke-width="0.25"/>
@@ -424,7 +452,7 @@
 </g>
 <g class="fade-in"><rect x="245" y="242" width="10" height="10" rx="1" fill="#718096" />
 <text x="263" y="250" class="font-sans label-text">Other</text>
-<text x="390" y="250" text-anchor="end" class="font-mono val-text">5.4%</text>
+<text x="390" y="250" text-anchor="end" class="font-mono val-text">5.3%</text>
 </g>
 <line x1="400" y1="55" x2="400" y2="295" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3" />
 <text x="420" y="68" class="font-serif sub-title">II. RECENT ACTIVITY (LAST 60 DAYS)</text>
@@ -436,20 +464,20 @@
 <line x1="712.5" y1="85" x2="712.5" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <line x1="760.0" y1="85" x2="760.0" y2="292" stroke="var(--grid)" stroke-width="0.75" />
 <text x="760.0" y="80" text-anchor="middle" class="font-mono val-text" style="font-size: 9px;">100%</text>
-<g><text x="420" y="112" text-anchor="start" class="font-sans label-text">TeX</text><text x="555" y="112" text-anchor="end" class="font-mono val-text fade-in">77.9%</text><rect class="bar-0" x="570" y="102" width="147.96" height="12" rx="1" fill="#43A047" />
-<rect class="bar-pattern-0" x="570" y="102" width="147.96" height="12" rx="1" fill="url(#pat-0)" role="img" aria-label="TeX: 77.9%" tabindex="0"><title>TeX: 77.9%</title></rect>
+<g><text x="420" y="112" text-anchor="start" class="font-sans label-text">TeX</text><text x="555" y="112" text-anchor="end" class="font-mono val-text fade-in">77.7%</text><rect class="bar-0" x="570" y="102" width="147.72" height="12" rx="1" fill="#43A047" />
+<rect class="bar-pattern-0" x="570" y="102" width="147.72" height="12" rx="1" fill="url(#pat-1)" role="img" aria-label="TeX: 77.7%" tabindex="0"><title>TeX: 77.7%</title></rect>
 </g>
-<g><text x="420" y="148" text-anchor="start" class="font-sans label-text">Python</text><text x="555" y="148" text-anchor="end" class="font-mono val-text fade-in">12.9%</text><rect class="bar-1" x="570" y="138" width="24.54" height="12" rx="1" fill="#3f6a8a" />
-<rect class="bar-pattern-1" x="570" y="138" width="24.54" height="12" rx="1" fill="url(#pat-1)" role="img" aria-label="Python: 12.9%" tabindex="0"><title>Python: 12.9%</title></rect>
+<g><text x="420" y="148" text-anchor="start" class="font-sans label-text">Python</text><text x="555" y="148" text-anchor="end" class="font-mono val-text fade-in">13.3%</text><rect class="bar-1" x="570" y="138" width="25.18" height="12" rx="1" fill="#3f6a8a" />
+<rect class="bar-pattern-1" x="570" y="138" width="25.18" height="12" rx="1" fill="url(#pat-3)" role="img" aria-label="Python: 13.3%" tabindex="0"><title>Python: 13.3%</title></rect>
 </g>
-<g><text x="420" y="184" text-anchor="start" class="font-sans label-text">MATLAB</text><text x="555" y="184" text-anchor="end" class="font-mono val-text fade-in">5.0%</text><rect class="bar-2" x="570" y="174" width="9.59" height="12" rx="1" fill="#bd532b" />
-<rect class="bar-pattern-2" x="570" y="174" width="9.59" height="12" rx="1" fill="url(#pat-2)" role="img" aria-label="MATLAB: 5.0%" tabindex="0"><title>MATLAB: 5.0%</title></rect>
+<g><text x="420" y="184" text-anchor="start" class="font-sans label-text">MATLAB</text><text x="555" y="184" text-anchor="end" class="font-mono val-text fade-in">4.9%</text><rect class="bar-2" x="570" y="174" width="9.38" height="12" rx="1" fill="#bd532b" />
+<rect class="bar-pattern-2" x="570" y="174" width="9.38" height="12" rx="1" fill="url(#pat-4)" role="img" aria-label="MATLAB: 4.9%" tabindex="0"><title>MATLAB: 4.9%</title></rect>
 </g>
-<g><text x="420" y="220" text-anchor="start" class="font-sans label-text">Jupyter Notebook</text><text x="555" y="220" text-anchor="end" class="font-mono val-text fade-in">4.2%</text><rect class="bar-3" x="570" y="210" width="7.90" height="12" rx="1" fill="#b85a1c" />
-<rect class="bar-pattern-3" x="570" y="210" width="7.90" height="12" rx="1" fill="url(#pat-3)" role="img" aria-label="Jupyter Notebook: 4.2%" tabindex="0"><title>Jupyter Notebook: 4.2%</title></rect>
+<g><text x="420" y="220" text-anchor="start" class="font-sans label-text">Jupyter Notebook</text><text x="555" y="220" text-anchor="end" class="font-mono val-text fade-in">4.1%</text><rect class="bar-3" x="570" y="210" width="7.72" height="12" rx="1" fill="#b85a1c" />
+<rect class="bar-pattern-3" x="570" y="210" width="7.72" height="12" rx="1" fill="url(#pat-0)" role="img" aria-label="Jupyter Notebook: 4.1%" tabindex="0"><title>Jupyter Notebook: 4.1%</title></rect>
 </g>
 <line x1="15" y1="315" x2="785" y2="315" stroke="var(--border)" stroke-width="0.75" />
-<text x="15" y="333" class="font-serif note-text" style="font-style: italic;">* Note: All-time language distribution is measured by bytes of code. Recent activity is based on commits over the last 60 days.</text>
+<text x="15" y="333" class="font-serif note-text" style="font-style: italic;">* Note: All-time language distribution is measured by bytes of code. Recent activity reflects repositories pushed to within the last 60 days.</text>
 <text x="785" y="333" text-anchor="end" class="font-serif note-text">Source: GitHub API</text>
 <line x1="15" y1="346" x2="785" y2="346" stroke="var(--border)" stroke-width="1.5" />
 </svg>
